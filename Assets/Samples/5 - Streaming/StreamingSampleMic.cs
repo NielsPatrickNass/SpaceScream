@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Whisper.Utils;
@@ -16,7 +17,8 @@ namespace Whisper.Samples
         [Header("UI")] 
         public Button button;
         public Text buttonText;
-        public Text text;
+        public Text fulltext;
+        public TextMeshProUGUI lastsegmentText;
         public ScrollRect scroll;
         private WhisperStream _stream;
 
@@ -52,7 +54,7 @@ namespace Whisper.Samples
     
         private void OnResult(string result)
         {
-            text.text = result;
+            fulltext.text = result;
             UiUtils.ScrollDown(scroll);
             
         }
@@ -69,6 +71,7 @@ namespace Whisper.Samples
             if (segment.Result.Contains("["))
                 return;
             jammoBehavior.OnOrderGiven(segment.Result);
+            lastsegmentText.text = segment.Result;
         }
         
         private void OnFinished(string finalResult)
