@@ -17,6 +17,8 @@
 *.blend1.meta
 *.bin
 *.bin.meta
+*.onnx
+*.onnx.meta
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
