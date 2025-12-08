@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -10,6 +11,17 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         
+    }
+
+    public List<GameObject> GetItems()
+    {
+        List<GameObject> loclist = new List<GameObject>();
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            loclist.Add(transform.GetChild(i).gameObject);
+        }
+        return loclist;
     }
 
     public void AddItem(GameObject g)

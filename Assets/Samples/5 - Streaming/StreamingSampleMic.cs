@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Whisper.Utils;
 
@@ -21,6 +22,8 @@ namespace Whisper.Samples
         public TextMeshProUGUI lastsegmentText;
         public ScrollRect scroll;
         private WhisperStream _stream;
+
+        public UnityEvent onSegmentFinishedEvent;
 
         private async void Start()
         {
@@ -70,6 +73,7 @@ namespace Whisper.Samples
 
             if (segment.Result.Contains("["))
                 return;
+            onSegmentFinishedEvent.Invoke();
             jammoBehavior.OnOrderGiven(segment.Result);
             lastsegmentText.text = segment.Result;
         }

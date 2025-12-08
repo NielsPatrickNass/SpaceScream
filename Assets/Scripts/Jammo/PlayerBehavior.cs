@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using Whisper;
@@ -15,6 +16,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     public Interactable currentlyInteractingWith;
 
     public Inventory inventory;
+
+    public string debugState;
 
     /// <summary>
     /// The Robot Action List
@@ -56,6 +59,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     [Header("Robot list of actions")]
     public List<Actions> actionsList;
     public List<Actions> actionsListOfCurrentRoom;
+    public List<Actions> actionsListBonus;
     
     [Header("NavMesh and Animation")]
     public Animator anim;                       // Robot Animator
@@ -100,7 +104,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     /// </summary>
     private void RotateTo()
     {
-        var _lookRotation = Quaternion.LookRotation(cam.transform.position);
+        var _lookRotation = Quaternion.LookRotation(new Vector3(cam.transform.position.x, transform.position.y, cam.transform.position.z));
         agent.transform.rotation = Quaternion.RotateTowards(agent.transform.rotation, _lookRotation, 360);
     }
 
@@ -161,13 +165,15 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             string verb = actionsList[maxScoreIndex].verb;
             //Debug.Log("goalobject: " + actionsList[maxScoreIndex].noun.ToLower().Replace(".", "") + "| state: " + (State)System.Enum.Parse(typeof(State), verb, true));
 
-            if (currentlyInteractingWith != null && (verb=="back" ||verb =="stop" || verb == "exit" ||verb=="let's go"))
+            if (currentlyInteractingWith != null && (verb == "back" || verb == "stop" || verb == "exit" || verb == "let's go"))
             {
                 currentlyInteractingWith.EndInteraction();
                 actionsList = actionsListOfCurrentRoom;
             }
+            else if (currentlyInteractingWith != null)
+                currentlyInteractingWith.PerformInteraction(actionsList[maxScoreIndex], inventory);
 
-            object isState = null;
+                object isState = null;
             // Set the Robot State == verb
             if (Enum.TryParse(typeof(State), verb, out isState))
                 state = (State)System.Enum.Parse(typeof(State), verb, true);
@@ -223,42 +229,55 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     public void OnOrderGiven(string prompt)
     {
         sentences = new List<string>();
-        int i = 0;
 
+        /*
+        int i = 0;
         while (i < actionsList.Count)
         {
             if (actionsList[i].verb == "PickUp" || actionsList[i].verb == "UseInteract" || actionsList[i].verb == "MoveTo")
             {
-                actionsList.RemoveAt(i);
+               actionsList.RemoveAt(i);
             }
             else
                 i++;
         }
+        */
+        actionsList = new List<Actions>();
+        
+        if (currentlyInteractingWith != null)
+            actionsList.AddRange(currentlyInteractingWith.GetCurrentActions());
+        actionsList.AddRange(actionsListBonus);
+        actionsList.AddRange(PickUp.GetPossibleActions());
+        actionsList.AddRange(Interactable.GetPossibleActions());
 
         foreach (PlayerBehavior.Actions actions in actionsList)
         {
             sentences.Add(actions.sentence);
         }
 
-        sentences.AddRange(PickUp.GetPossibleSentences());
-        sentences.AddRange(Interactable.GetPossibleSentences());
-        
-        actionsList.AddRange(PickUp.GetPossibleActions());
-        actionsList.AddRange(Interactable.GetPossibleActions());
-
         sentencesArray = sentences.ToArray();
         (int, float) tuple_ = jammoBrain.RankSimilarity(prompt, sentencesArray);
         Utility(tuple_.Item2, tuple_.Item1);
     }
-        
+    
+    public void ChangeState(int newstate)
+    {
+        if (anim.GetInteger("state") == newstate)
+            return;
+        anim.SetInteger("state", newstate);
+        anim.SetTrigger("stateChanged");
+    }
 
     private void Update()
     {
+
+        debugState = state.ToString();
         // Here's the State Machine, where given its current state, the agent will act accordingly
         switch (state)
         {
             default:
             case State.Idle:
+                ChangeState(0);
                 break;
 
             case State.Hello:
@@ -267,8 +286,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 //if (Vector3.Distance(transform.position, playerPosition.position) < reachedPositionDistance)
                 {
                     RotateTo();
-                    anim.SetBool("hello", true);
-                    state = State.Idle;
+                    ChangeState(1);
+                    //state = State.Idle;
                 }
                 break;
 
@@ -278,8 +297,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 //if (Vector3.Distance(transform.position, playerPosition.position) < reachedPositionDistance)
                 {
                     RotateTo();
-                    anim.SetBool("happy", true);
-                    state = State.Idle;
+                    ChangeState(2);
+                    //state = State.Idle;
                 }
                 break;
 
@@ -288,8 +307,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 //if (Vector3.Distance(transform.position, playerPosition.position) < reachedPositionDistance)
                 {
                     RotateTo();
-                    anim.SetBool("puzzled", true);
-                    state = State.Idle;
+                    ChangeState(3);
+                    //state = State.Idle;
                 }
                 break;
 

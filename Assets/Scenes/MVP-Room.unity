@@ -217,7 +217,6 @@ RectTransform:
   - {fileID: 1305686898}
   - {fileID: 1797165884}
   - {fileID: 859350538}
-  - {fileID: 860560636}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1426,11 +1425,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBehavior
   currentlyInteractingWith: {fileID: 0}
   inventory: {fileID: 911554318}
+  debugState: 
   jammoBrain: {fileID: 630760478}
-  actionsList:
+  actionsList: []
+  actionsListOfCurrentRoom:
   - sentence: Move to the Door
     verb: MoveTo
     noun: doorinteractable
+  - sentence: Move to the light switch
+    verb: MoveTo
+    noun: lightswitch
+  - sentence: Use the light switch
+    verb: UseInteract
+    noun: lightswitch
   - sentence: Come to Me
     verb: MoveTo
     noun: audiencepos
@@ -1446,16 +1453,7 @@ MonoBehaviour:
   - sentence: Good Boy
     verb: Happy
     noun: 
-  actionsListOfCurrentRoom:
-  - sentence: Move to the Door
-    verb: MoveTo
-    noun: doorinteractable
-  - sentence: Move to the light switch
-    verb: MoveTo
-    noun: lightswitch
-  - sentence: Use the light switch
-    verb: UseInteract
-    noun: lightswitch
+  actionsListBonus:
   - sentence: Come to Me
     verb: MoveTo
     noun: audiencepos
@@ -2383,8 +2381,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Your speech will appear hear...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
+  m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2414,7 +2412,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 32
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -2485,59 +2483,59 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 5378530}
+    m_TransformParent: {fileID: 1121031728}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.050000004
+      value: 0.050000012
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.05000001
+      value: 0.050000023
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.049999997
+      value: 0.049999986
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -960.97
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -535.0743
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.5210557
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.71234167
+      value: 0.59920967
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.21917395
+      value: 0.10403462
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6328928
+      value: -0.72388613
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.2097114
+      value: -0.32575047
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -2.27
+      value: -20.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -83.922
+      value: -94.26
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 9.513
+      value: -35.228
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1510876c3955c8846a0212d95103a665, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -3145,6 +3143,61 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1102935561}
   m_Mesh: {fileID: -8143615732836099353, guid: b8443c10446125346b39f75c199f74ad, type: 3}
+--- !u!1 &1121031727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1121031728}
+  - component: {fileID: 1121031729}
+  m_Layer: 0
+  m_Name: WalkieTalkie
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1121031728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121031727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.9699707, y: 6.60572, z: -4.3510556}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 860560636}
+  m_Father: {fileID: 7240741239409728198}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1121031729
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121031727}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 508393fba882a134895b0ddfce96d316, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1122117411
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5099,6 +5152,21 @@ MonoBehaviour:
   fulltext: {fileID: 78838948}
   lastsegmentText: {fileID: 859350536}
   scroll: {fileID: 1864909438}
+  onSegmentFinishedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1121031729}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: message
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1876022929
 Transform:
   m_ObjectHideFlags: 0
@@ -6981,6 +7049,7 @@ Transform:
   m_Children:
   - {fileID: 2845570107348822282}
   - {fileID: 1538214417}
+  - {fileID: 1121031728}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7599938001495881283

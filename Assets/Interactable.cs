@@ -95,6 +95,11 @@ public class Interactable : MonoBehaviour
         return null;
     }
 
+    public virtual List<PlayerBehavior.Actions> GetCurrentActions()
+    {
+        return possibleInteractions;
+    }
+
     public virtual List<PlayerBehavior.Actions> StartInteraction()
     {
         Debug.Log("Interact");
@@ -105,6 +110,11 @@ public class Interactable : MonoBehaviour
             EndInteraction();
         
         return possibleInteractions;
+    }
+
+    public virtual void PerformInteraction(PlayerBehavior.Actions action, Inventory inventory)
+    {
+
     }
 
     public virtual void EndInteraction() { 
