@@ -41,8 +41,9 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     {
         Idle,
         Hello, // Say hello
-        Happy, // Be happy
+        Dance, // Be happy, dance
         Puzzled, // Be Puzzled
+        Hide, // Be Puzzled
         MoveTo, // Move to a pillar
         UseInteract, // Move to then activate interact
         PickUp, // Move to then pickup
@@ -86,6 +87,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     {
         // Set the State to Idle
         state = State.Idle;
+        sentences = new List<string>();
 
         // Take all the possible actions in actionsList
         foreach (PlayerBehavior.Actions actions in actionsList)
@@ -144,7 +146,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     {
         // First we check that the score is > of 0.2, otherwise we let our agent perplexed;
         // This way we can handle strange input text (for instance if we write "Go see the dog!" the agent will be puzzled).
-        if (maxScore < 0.20f)
+        if (maxScore < 0.35f)
         {
             state = State.Puzzled;
         }
@@ -250,10 +252,42 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
         (int, float) tuple_ = jammoBrain.RankSimilarity(prompt, sentencesArray);
         Utility(tuple_.Item2, tuple_.Item1);
     }
-        
+
+    /*private void ResetEmotionBools()
+    {
+        anim.SetBool("hello", false);
+        anim.SetBool("hide", false);
+        anim.SetBool("puzzled", false);
+    }*/
 
     private void Update()
     {
+
+        if (anim != null)
+        {
+            float speedParam = 0f;
+
+            switch (state)
+            {
+                case State.MoveTo:
+                case State.UseInteract:
+                case State.PickUp:
+                case State.BringObject:
+                case State.BringObjectToPlayer:
+                    // If speed than walk
+                    speedParam = 1f;
+                    break;
+
+                default:
+                    // Idle, Hello, Happy, Puzzled, usw. = stay
+                    speedParam = 0f;
+                    break;
+            }
+
+            anim.SetFloat("Speed", speedParam);
+        }
+
+
         // Here's the State Machine, where given its current state, the agent will act accordingly
         switch (state)
         {
@@ -261,48 +295,100 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             case State.Idle:
                 break;
 
-            case State.Hello:
+            /*case State.Hello:
                 agent.SetDestination(transform.position);
-                //agent.SetDestination(playerPosition.position);
-                //if (Vector3.Distance(transform.position, playerPosition.position) < reachedPositionDistance)
+                RotateTo();
+                anim.SetTrigger("hello");
+                state = State.Idle;
+                break;*/
+
+            case State.Hide:
+                agent.SetDestination(transform.position);
+                RotateTo();
+                anim.SetTrigger("hide");
+                state = State.Idle;
+                break;
+
+            case State.Dance:
+                agent.SetDestination(transform.position);
+                RotateTo();
+                anim.SetTrigger("dance");
+                state = State.Idle;
+                break;
+
+            /*case State.Puzzled:
+                agent.SetDestination(transform.position);
+                RotateTo();
+                anim.SetTrigger("puzzled");
+                state = State.Idle;
+                break;*/
+
+            case State.Puzzled:
+                Debug.Log("STATE = PUZZLED (Trigger puzzled)");
+                agent.isStopped = true;
+                agent.ResetPath();
+                RotateTo();
+                anim.SetTrigger("puzzled");
+                state = State.Idle;
+                break;
+
+            case State.Hello:
+                Debug.Log("STATE = HELLO (Trigger hello)");
+                agent.isStopped = true;
+                agent.ResetPath();
+                RotateTo();
+                anim.SetTrigger("hello");
+                state = State.Idle;
+                break;
+
+
+            /*case State.Hello:
+                agent.SetDestination(transform.position);
                 {
                     RotateTo();
-                    anim.SetBool("hello", true);
+                    ResetEmotionBools();         // NEU
+                    anim.SetBool("hello", true); // nur hello aktiv
                     state = State.Idle;
                 }
                 break;
 
-            case State.Happy:
+            case State.Hide:
                 agent.SetDestination(transform.position);
-                //agent.SetDestination(playerPosition.position);
-                //if (Vector3.Distance(transform.position, playerPosition.position) < reachedPositionDistance)
                 {
                     RotateTo();
-                    anim.SetBool("happy", true);
+                    ResetEmotionBools();         // NEU
+                    anim.SetBool("hide", true);
                     state = State.Idle;
                 }
                 break;
 
             case State.Puzzled:
                 agent.SetDestination(transform.position);
-                //if (Vector3.Distance(transform.position, playerPosition.position) < reachedPositionDistance)
                 {
                     RotateTo();
+                    ResetEmotionBools();         // NEU
                     anim.SetBool("puzzled", true);
                     state = State.Idle;
                 }
-                break;
+                break;*/
 
             case State.MoveTo:
+                agent.isStopped = false;
                 agent.SetDestination(goalObject.transform.position);
 
-                if (agent.velocity.magnitude < 0.3f && Mathf.Abs(transform.position.y - goalObject.transform.position.y) < 3 && Vector3.Distance(transform.position, new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z)) < reachedPositionDistance)
+                if (agent.velocity.magnitude < 0.3f &&
+                    Mathf.Abs(transform.position.y - goalObject.transform.position.y) < 3 &&
+                    Vector3.Distance(transform.position,
+                        new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z))
+                    < reachedPositionDistance)
                 {
+                    agent.isStopped = true;
+                    agent.ResetPath();  // Bewegung wirklich beenden
+
                     if (goalObject.name == "audiencepos")
                         state = State.Hello;
                     else
                         state = State.Idle;
-
                 }
                 break;
 
