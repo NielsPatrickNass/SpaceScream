@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class NavMeshAgentAnimator : MonoBehaviour
 {
     private static int ANIMATOR_PARAM_WALK_SPEED =
-       Animator.StringToHash("Blend");
+       Animator.StringToHash("Speed");
 
     private Animator _animator;
     private NavMeshAgent _agent;

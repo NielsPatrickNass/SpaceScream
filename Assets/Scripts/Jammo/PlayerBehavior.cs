@@ -2,7 +2,6 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using Whisper;
@@ -16,8 +15,6 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     public Interactable currentlyInteractingWith;
 
     public Inventory inventory;
-
-    public string debugState;
 
     /// <summary>
     /// The Robot Action List
@@ -44,8 +41,9 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     {
         Idle,
         Hello, // Say hello
-        Happy, // Be happy
+        Dance, // Be happy, dance
         Puzzled, // Be Puzzled
+        Hide, // Be Puzzled
         MoveTo, // Move to a pillar
         UseInteract, // Move to then activate interact
         PickUp, // Move to then pickup
@@ -59,7 +57,6 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     [Header("Robot list of actions")]
     public List<Actions> actionsList;
     public List<Actions> actionsListOfCurrentRoom;
-    public List<Actions> actionsListBonus;
     
     [Header("NavMesh and Animation")]
     public Animator anim;                       // Robot Animator
@@ -90,6 +87,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     {
         // Set the State to Idle
         state = State.Idle;
+        sentences = new List<string>();
 
         // Take all the possible actions in actionsList
         foreach (PlayerBehavior.Actions actions in actionsList)
@@ -104,7 +102,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     /// </summary>
     private void RotateTo()
     {
-        var _lookRotation = Quaternion.LookRotation(new Vector3(cam.transform.position.x, transform.position.y, cam.transform.position.z));
+        var _lookRotation = Quaternion.LookRotation(cam.transform.position);
         agent.transform.rotation = Quaternion.RotateTowards(agent.transform.rotation, _lookRotation, 360);
     }
 
@@ -148,7 +146,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     {
         // First we check that the score is > of 0.2, otherwise we let our agent perplexed;
         // This way we can handle strange input text (for instance if we write "Go see the dog!" the agent will be puzzled).
-        if (maxScore < 0.20f)
+        if (maxScore < 0.35f)
         {
             state = State.Puzzled;
         }
@@ -165,15 +163,13 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             string verb = actionsList[maxScoreIndex].verb;
             //Debug.Log("goalobject: " + actionsList[maxScoreIndex].noun.ToLower().Replace(".", "") + "| state: " + (State)System.Enum.Parse(typeof(State), verb, true));
 
-            if (currentlyInteractingWith != null && (verb == "back" || verb == "stop" || verb == "exit" || verb == "let's go"))
+            if (currentlyInteractingWith != null && (verb=="back" ||verb =="stop" || verb == "exit" ||verb=="let's go"))
             {
                 currentlyInteractingWith.EndInteraction();
                 actionsList = actionsListOfCurrentRoom;
             }
-            else if (currentlyInteractingWith != null)
-                currentlyInteractingWith.PerformInteraction(actionsList[maxScoreIndex], inventory);
 
-                object isState = null;
+            object isState = null;
             // Set the Robot State == verb
             if (Enum.TryParse(typeof(State), verb, out isState))
                 state = (State)System.Enum.Parse(typeof(State), verb, true);
@@ -229,99 +225,170 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     public void OnOrderGiven(string prompt)
     {
         sentences = new List<string>();
-
-        /*
         int i = 0;
+
         while (i < actionsList.Count)
         {
             if (actionsList[i].verb == "PickUp" || actionsList[i].verb == "UseInteract" || actionsList[i].verb == "MoveTo")
             {
-               actionsList.RemoveAt(i);
+                actionsList.RemoveAt(i);
             }
             else
                 i++;
         }
-        */
-        actionsList = new List<Actions>();
-        
-        if (currentlyInteractingWith != null)
-            actionsList.AddRange(currentlyInteractingWith.GetCurrentActions());
-        actionsList.AddRange(actionsListBonus);
-        actionsList.AddRange(PickUp.GetPossibleActions());
-        actionsList.AddRange(Interactable.GetPossibleActions());
 
         foreach (PlayerBehavior.Actions actions in actionsList)
         {
             sentences.Add(actions.sentence);
         }
 
+        sentences.AddRange(PickUp.GetPossibleSentences());
+        sentences.AddRange(Interactable.GetPossibleSentences());
+        
+        actionsList.AddRange(PickUp.GetPossibleActions());
+        actionsList.AddRange(Interactable.GetPossibleActions());
+
         sentencesArray = sentences.ToArray();
         (int, float) tuple_ = jammoBrain.RankSimilarity(prompt, sentencesArray);
         Utility(tuple_.Item2, tuple_.Item1);
     }
-    
-    public void ChangeState(int newstate)
+
+    /*private void ResetEmotionBools()
     {
-        if (anim.GetInteger("state") == newstate)
-            return;
-        anim.SetInteger("state", newstate);
-        anim.SetTrigger("stateChanged");
-    }
+        anim.SetBool("hello", false);
+        anim.SetBool("hide", false);
+        anim.SetBool("puzzled", false);
+    }*/
 
     private void Update()
     {
 
-        debugState = state.ToString();
+        if (anim != null)
+        {
+            float speedParam = 0f;
+
+            switch (state)
+            {
+                case State.MoveTo:
+                case State.UseInteract:
+                case State.PickUp:
+                case State.BringObject:
+                case State.BringObjectToPlayer:
+                    // If speed than walk
+                    speedParam = 1f;
+                    break;
+
+                default:
+                    // Idle, Hello, Happy, Puzzled, usw. = stay
+                    speedParam = 0f;
+                    break;
+            }
+
+            anim.SetFloat("Speed", speedParam);
+        }
+
+
         // Here's the State Machine, where given its current state, the agent will act accordingly
         switch (state)
         {
             default:
             case State.Idle:
-                ChangeState(0);
+                break;
+
+            /*case State.Hello:
+                agent.SetDestination(transform.position);
+                RotateTo();
+                anim.SetTrigger("hello");
+                state = State.Idle;
+                break;*/
+
+            case State.Hide:
+                agent.SetDestination(transform.position);
+                RotateTo();
+                anim.SetTrigger("hide");
+                state = State.Idle;
+                break;
+
+            case State.Dance:
+                agent.SetDestination(transform.position);
+                RotateTo();
+                anim.SetTrigger("dance");
+                state = State.Idle;
+                break;
+
+            /*case State.Puzzled:
+                agent.SetDestination(transform.position);
+                RotateTo();
+                anim.SetTrigger("puzzled");
+                state = State.Idle;
+                break;*/
+
+            case State.Puzzled:
+                Debug.Log("STATE = PUZZLED (Trigger puzzled)");
+                agent.isStopped = true;
+                agent.ResetPath();
+                RotateTo();
+                anim.SetTrigger("puzzled");
+                state = State.Idle;
                 break;
 
             case State.Hello:
+                Debug.Log("STATE = HELLO (Trigger hello)");
+                agent.isStopped = true;
+                agent.ResetPath();
+                RotateTo();
+                anim.SetTrigger("hello");
+                state = State.Idle;
+                break;
+
+
+            /*case State.Hello:
                 agent.SetDestination(transform.position);
-                //agent.SetDestination(playerPosition.position);
-                //if (Vector3.Distance(transform.position, playerPosition.position) < reachedPositionDistance)
                 {
                     RotateTo();
-                    ChangeState(1);
-                    //state = State.Idle;
+                    ResetEmotionBools();         // NEU
+                    anim.SetBool("hello", true); // nur hello aktiv
+                    state = State.Idle;
                 }
                 break;
 
-            case State.Happy:
+            case State.Hide:
                 agent.SetDestination(transform.position);
-                //agent.SetDestination(playerPosition.position);
-                //if (Vector3.Distance(transform.position, playerPosition.position) < reachedPositionDistance)
                 {
                     RotateTo();
-                    ChangeState(2);
-                    //state = State.Idle;
+                    ResetEmotionBools();         // NEU
+                    anim.SetBool("hide", true);
+                    state = State.Idle;
                 }
                 break;
 
             case State.Puzzled:
                 agent.SetDestination(transform.position);
-                //if (Vector3.Distance(transform.position, playerPosition.position) < reachedPositionDistance)
                 {
                     RotateTo();
-                    ChangeState(3);
-                    //state = State.Idle;
+                    ResetEmotionBools();         // NEU
+                    anim.SetBool("puzzled", true);
+                    state = State.Idle;
                 }
-                break;
+                break;*/
 
             case State.MoveTo:
+                agent.isStopped = false;
                 agent.SetDestination(goalObject.transform.position);
 
-                if (agent.velocity.magnitude < 0.3f && Mathf.Abs(transform.position.y - goalObject.transform.position.y) < 3 && Vector3.Distance(transform.position, new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z)) < reachedPositionDistance)
+                if (agent.velocity.magnitude < 0.3f &&
+                    Mathf.Abs(transform.position.y - goalObject.transform.position.y) < 3 &&
+                    Vector3.Distance(transform.position,
+                        new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z))
+                    < reachedPositionDistance)
                 {
+                    agent.isStopped = true;
+                    agent.ResetPath();  // Bewegung wirklich beenden
+
                     if (goalObject.name == "audiencepos")
                         state = State.Hello;
                     else
                         state = State.Idle;
-
                 }
                 break;
 
