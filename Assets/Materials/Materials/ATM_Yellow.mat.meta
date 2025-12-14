@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 28035663f93ed4a4b8bb4f9b3a208bc2
+timeCreated: 1499533805
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 95057
+  packageName: ATM
+  packageVersion: 1.0
+  assetPath: Assets/CGY_ATM/Materials/ATM_Yellow.mat
+  uploadId: 189006

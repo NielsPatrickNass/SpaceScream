@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4ed252e36730dcb44ba5df09d823c485
+timeCreated: 1499534403
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 95057
+  packageName: ATM
+  packageVersion: 1.0
+  assetPath: Assets/CGY_ATM/Prefabs/ATM_Beige.prefab
+  uploadId: 189006

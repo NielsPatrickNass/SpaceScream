@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ce03f7408cf481d4dbca58fd123080fc
+timeCreated: 1499533384
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 95057
+  packageName: ATM
+  packageVersion: 1.0
+  assetPath: Assets/CGY_ATM/Materials/ATM_Beige.mat
+  uploadId: 189006
