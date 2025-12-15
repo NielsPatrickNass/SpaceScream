@@ -45,6 +45,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     private enum State
     {
         Idle,
+        Sit,
         Hello, // Say hello
         Dance, // Be happy, dance
         Puzzled, // Be Puzzled
@@ -292,6 +293,17 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
         anim.SetBool("hide", false);
         anim.SetBool("puzzled", false);
     }*/
+    public void SitDown(Transform sitPoint)
+    {
+        agent.isStopped = true;
+        agent.ResetPath();
+
+        // exakt positionieren
+        transform.position = sitPoint.position;
+        transform.rotation = sitPoint.rotation;
+
+        state = State.Sit;
+    }
 
     private void Update()
     {
@@ -386,6 +398,11 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 agent.ResetPath();
                 RotateTo();
                 anim.SetTrigger("puzzled");
+                state = State.Idle;
+                break;
+
+            case State.Sit:
+                anim.SetTrigger("sit");
                 state = State.Idle;
                 break;
 
