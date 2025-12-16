@@ -58524,6 +58524,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1225089906489030011, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
+      propertyPath: m_StoppingDistance
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 1389950371896766907, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
       propertyPath: m_Name
       value: Everything
@@ -58619,6 +58623,16 @@ PrefabInstance:
     - target: {fileID: 3995888536261854204, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
       propertyPath: m_AnimatePhysics
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3995888536261854204, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+        'mixamorig:LeftHandIndex1'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
+        'mixamorig:RightArm'\n\tTransform 'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform
+        'mixamorig:RightHandIndex3'\n\tTransform 'mixamorig:RightFoot'\n\tand more
+        ...\n\tFrom animation clip 'man_sitdown'"
       objectReference: {fileID: 0}
     - target: {fileID: 7962016876008182110, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
       propertyPath: m_SizeDelta.y
@@ -61576,7 +61590,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.67
+      value: 5.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
       propertyPath: m_LocalRotation.w
