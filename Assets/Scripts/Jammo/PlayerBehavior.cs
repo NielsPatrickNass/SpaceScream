@@ -108,7 +108,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     private void RotateTo()
     {
         var _lookRotation = Quaternion.LookRotation(cam.transform.position);
-        agent.transform.rotation = Quaternion.RotateTowards(agent.transform.rotation, _lookRotation, 360);
+        agent.transform.rotation = Quaternion.RotateTowards(agent.transform.rotation, _lookRotation, 10);
     }
 
 

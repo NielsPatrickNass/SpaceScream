@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 13926437}
   m_Layer: 0
   m_Name: Door_Camera
-  m_TagString: PlayerEyes
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -221,7 +221,7 @@ Transform:
   m_GameObject: {fileID: 13926435}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.9999568, z: -0, w: 0.0092997905}
-  m_LocalPosition: {x: 0.496, y: -0.029999971, z: 1.119}
+  m_LocalPosition: {x: 0.493, y: -0.029999971, z: 0.952}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -297,7 +297,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 20.78461
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -312,7 +312,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -405,7 +405,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6689036041284674117, guid: 6b824042c81423b4ba53d5ce22f87a79, type: 3}
       propertyPath: m_Name
-      value: sci-fi_seat (2)
+      value: seat
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 6b824042c81423b4ba53d5ce22f87a79, type: 3}
       propertyPath: m_LocalScale.z
@@ -482,9 +482,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 6b824042c81423b4ba53d5ce22f87a79, type: 3}
       insertIndex: -1
       addedObject: {fileID: 748794901}
-    - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 6b824042c81423b4ba53d5ce22f87a79, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 748794902}
   m_SourcePrefab: {fileID: -5645937942226959685, guid: 6b824042c81423b4ba53d5ce22f87a79, type: 3}
 --- !u!4 &47195944 stripped
 Transform:
@@ -656,6 +653,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1599636dc8965eb49afeaf0bd909f98f, type: 2}
+    - target: {fileID: 4007320975085423066, guid: 827062553953ace449df65073bc88caa, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4950753977962555242, guid: 827062553953ace449df65073bc88caa, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -666,7 +667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5417272378840401517, guid: 827062553953ace449df65073bc88caa, type: 3}
       propertyPath: m_Name
-      value: computer
+      value: computerinteractable
       objectReference: {fileID: 0}
     - target: {fileID: 6778070737981463575, guid: 827062553953ace449df65073bc88caa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -56917,7 +56918,7 @@ GameObject:
   - component: {fileID: 124140095}
   - component: {fileID: 124140096}
   m_Layer: 0
-  m_Name: computer_collider
+  m_Name: InteractPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56980,7 +56981,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -57325,7 +57326,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 523783195}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: -5645937942226959685, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
 --- !u!4 &194817890 stripped
@@ -58524,9 +58528,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11057702825693805, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 495a70b8a8e41ba49a312213d8a405a6, type: 3}
+    - target: {fileID: 11057702825693805, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11057702825693805, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
+      propertyPath: m_AnimatePhysics
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11057702825693805, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11057702825693805, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1225089906489030011, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
       propertyPath: m_StoppingDistance
-      value: 0.8
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1389950371896766907, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
       propertyPath: m_Name
@@ -58567,6 +58591,10 @@ PrefabInstance:
     - target: {fileID: 2296148017141218032, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 99.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 2297183913130971508, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
+      propertyPath: reachedPositionDistance
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2784638687046511985, guid: 3a2fd04c90864d0439cb5fb1f820b758, type: 3}
       propertyPath: m_LocalPosition.x
@@ -58934,8 +58962,9 @@ GameObject:
   m_Component:
   - component: {fileID: 493616013}
   - component: {fileID: 493616014}
+  - component: {fileID: 493616015}
   m_Layer: 0
-  m_Name: lever_collider
+  m_Name: InteractPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58950,7 +58979,7 @@ Transform:
   m_GameObject: {fileID: 493616012}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.457, y: -0.18, z: 0.385}
+  m_LocalPosition: {x: 0.457, y: -0.18, z: 0.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -58968,18 +58997,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f54810eb278cc3745b486c84fdbf3554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactable
-  interactCam: {fileID: 0}
+  interactCam: {fileID: 13926439}
   synonyms:
   - lever
   - hebel
+  - lever_collider
   useSynonyms: []
   possibleInteractions:
   - sentence: go to the lever
     verb: 'go '
-    noun: lever
+    noun: lever_collider
   - sentence: move to the lever
-    verb: 'move '
-    noun: lever
+    verb: moveTo
+    noun: lever_collider
+  - sentence: walk to the door
+    verb: moveTo
+    noun: 
+  - sentence: move to the door
+    verb: moveTo
+    noun: 
+--- !u!65 &493616015
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 493616012}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &504630289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59142,7 +59199,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1185912075}
+    m_TransformParent: {fileID: 194817890}
     m_Modifications:
     - target: {fileID: 8128668236925612103, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_Name
@@ -59150,31 +59207,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.78787
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.78787
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.78787
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.388955
+      value: -1.6413664
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.794
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15.535171
+      value: -2.1418455
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.89619344
+      value: 0.88771063
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalRotation.x
@@ -59182,7 +59239,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.44366363
+      value: 0.46040174
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 34b45e4046b1b5b4e897d5c4bd679eb4, type: 3}
       propertyPath: m_LocalRotation.z
@@ -59468,27 +59525,6 @@ MonoBehaviour:
   - sit down
   possibleInteractions: []
   sitPoint: {fileID: 0}
---- !u!114 &748794902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748794900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f54810eb278cc3745b486c84fdbf3554, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interactable
-  interactCam: {fileID: 0}
-  synonyms:
-  - sit
-  - chair
-  useSynonyms: []
-  possibleInteractions:
-  - sentence: sit down
-    verb: sit
-    noun: 
 --- !u!1 &749106873
 GameObject:
   m_ObjectHideFlags: 0
@@ -61180,7 +61216,6 @@ Transform:
   - {fileID: 1689465415}
   - {fileID: 171602888}
   - {fileID: 1044907478}
-  - {fileID: 523783195}
   - {fileID: 194817890}
   - {fileID: 1257348971}
   - {fileID: 1593657213}
@@ -61620,6 +61655,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8299016545003848433, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.591
+      objectReference: {fileID: 0}
+    - target: {fileID: -8299016545003848433, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.143
+      objectReference: {fileID: 0}
+    - target: {fileID: -6242405415559849177, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.596
+      objectReference: {fileID: 0}
+    - target: {fileID: -6242405415559849177, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.075
+      objectReference: {fileID: 0}
     - target: {fileID: -5580823815066826388, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.08
@@ -61687,21 +61738,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -4180588834650000294, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1354241575}
-    - targetCorrespondingSourceObject: {fileID: 2879070364656932655, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1354241574}
-    - targetCorrespondingSourceObject: {fileID: 2879070364656932655, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1431895728}
   m_SourcePrefab: {fileID: 100100000, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
 --- !u!4 &1354241570 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4852579122658683956, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
-  m_PrefabInstance: {fileID: 1354241569}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1354241571 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2879070364656932655, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
   m_PrefabInstance: {fileID: 1354241569}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1354241572 stripped
@@ -61714,28 +61754,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1945303906300338348, guid: eef5bf181864ddb4c8abe651b02262a0, type: 3}
   m_PrefabInstance: {fileID: 1354241569}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1354241574
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1354241571}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41b66d03a4acf0c43bfc5d151603c259, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LeverController
-  interactCam: {fileID: 0}
-  synonyms: []
-  useSynonyms: []
-  possibleInteractions: []
-  handle: {fileID: 1354241570}
-  requiredButton: {fileID: 1354241577}
-  buttonsToLock:
-  - {fileID: 1354241575}
-  downAngle: 90
-  moveDuration: 0.25
 --- !u!114 &1354241575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62006,27 +62024,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: f43fe16e27b1c6c4bad2f15593222b8c, type: 3}
   m_PrefabInstance: {fileID: 14331678}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1431895728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1354241571}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f54810eb278cc3745b486c84fdbf3554, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interactable
-  interactCam: {fileID: 0}
-  synonyms:
-  - lever
-  - hebel
-  useSynonyms: []
-  possibleInteractions:
-  - sentence: 
-    verb: 
-    noun: 
 --- !u!1001 &1437389718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62137,7 +62134,7 @@ Camera:
   m_GameObject: {fileID: 1441229962}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -62210,7 +62207,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 13926439}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -63650,6 +63648,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: lightswitch
       objectReference: {fileID: 0}
+    - target: {fileID: 6698984523021916855, guid: be60277fb0501c5488036f8aac136e48, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -63759,9 +63761,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b66d03a4acf0c43bfc5d151603c259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeverController
-  interactCam: {fileID: 13926439}
+  interactCam: {fileID: 0}
   synonyms:
-  - lever
+  - handle
   - hebel
   - 
   useSynonyms:
@@ -63769,12 +63771,12 @@ MonoBehaviour:
   - flip
   - toggle
   possibleInteractions:
-  - sentence: pull the lever down
+  - sentence: pull the handle down
     verb: pulldown
-    noun: 
-  - sentence: push the lever up
+    noun: handle
+  - sentence: push the handle up
     verb: pushup
-    noun: 
+    noun: handle
   handle: {fileID: 1354241570}
   requiredButton: {fileID: 1354241577}
   buttonsToLock:
