@@ -2368,6 +2368,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465095215}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &475915952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 475915953}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &475915953
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475915952}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.476, z: 0.9490001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1820268965}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &515469481
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13067,7 +13098,8 @@ Transform:
   m_LocalPosition: {x: -1.303, y: 0.506, z: 1.766}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 475915953}
   m_Father: {fileID: 861574156}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1820268967
@@ -13143,7 +13175,7 @@ MonoBehaviour:
   useSynonyms: []
   possibleInteractions: []
   actionEventPairs: []
-  teleportSpot: {fileID: 0}
+  teleportSpot: {fileID: 475915953}
 --- !u!1 &1851699983
 GameObject:
   m_ObjectHideFlags: 0
@@ -15001,7 +15033,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: c7b03fe49f20215428fc1aca88679553, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 5b163b5d347e67c40b3003a477a57f1c, type: 2}
   m_BuildHeightMesh: 0
 --- !u!108 &8535732773762321418
 Light:
