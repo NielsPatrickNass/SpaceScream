@@ -173,6 +173,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             }
 
             string verb = actionsList[maxScoreIndex].verb;
+            
             //Debug.Log("goalobject: " + actionsList[maxScoreIndex].noun.ToLower().Replace(".", "") + "| state: " + (State)System.Enum.Parse(typeof(State), verb, true));
 
 
@@ -240,6 +241,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             {
                 state = State.Puzzled;
             }
+            lastAction = actionsList[maxScoreIndex];
         }
     }
 
@@ -304,6 +306,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
 
         state = State.Sit;
     }
+
+    private Actions lastAction;
 
     private void Update()
     {
@@ -493,9 +497,9 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                     if (interactable != null)
                     {
                         currentlyInteractingWith = interactable;
-                        List<PlayerBehavior.Actions> newAtions = interactable.StartInteraction();
-                        if (newAtions.Count > 0)
-                            actionsList = newAtions;
+                        List<PlayerBehavior.Actions> newActions = interactable.StartInteraction(lastAction);
+                        if (newActions.Count > 0)
+                            actionsList = newActions;
                     }
                 }
                 break;

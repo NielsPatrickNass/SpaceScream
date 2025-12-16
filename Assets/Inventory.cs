@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -11,6 +12,31 @@ public class Inventory : MonoBehaviour
     void Start()
     {
         
+    }
+
+    public bool HasItem(string item)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).name == item)
+                return true;
+        }
+        return false;
+    }
+
+    public void ConsumeItem(string item)
+    {
+        int i = transform.childCount-1;
+
+        while (i > -1)
+        {
+            if (transform.GetChild(i).name.Equals(item))
+            {
+                Destroy(transform.GetChild(i).gameObject);
+                UiManager.Instance.SpawnNotifig(transform.GetChild(i).name + " used");
+            }
+                i--;
+        }
     }
 
     public List<GameObject> GetItems()

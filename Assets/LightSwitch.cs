@@ -5,10 +5,10 @@ public class LightSwitch : Interactable
 {
     public GameObject lightToInfluence;
 
-    public override List<PlayerBehavior.Actions> StartInteraction()
+    public override List<PlayerBehavior.Actions> StartInteraction(PlayerBehavior.Actions lastAction)
     {
         lightToInfluence.SetActive(!lightToInfluence.activeSelf);
-        return base.StartInteraction();
+        return base.StartInteraction(lastAction);
     }
 
 }

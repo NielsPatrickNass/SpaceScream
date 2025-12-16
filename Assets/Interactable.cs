@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static PlayerBehavior;
 
 public class Interactable : MonoBehaviour
@@ -12,6 +13,19 @@ public class Interactable : MonoBehaviour
     public List<PlayerBehavior.Actions> possibleInteractions;
 
     public static List<Interactable> interactables;
+
+    [System.Serializable]
+    public class ActionEventPair
+    {
+        public string action;
+        public UnityEvent eventToTrigger;
+        public string requiredItem;
+        public bool consumesItem;
+        //public bool removeActionAfterSuccess;
+    }
+
+    [SerializeField]
+    public List<ActionEventPair> actionEventPairs = new List<ActionEventPair>();
 
     public virtual void Start()
     {
@@ -100,12 +114,14 @@ public class Interactable : MonoBehaviour
         return possibleInteractions;
     }
 
-    public virtual List<PlayerBehavior.Actions> StartInteraction()
+    public virtual List<PlayerBehavior.Actions> StartInteraction(PlayerBehavior.Actions lastAction)
     {
         Debug.Log("Interact");
         if (interactCam != null)
             interactCam.gameObject.SetActive(true);
 
+        if (actionEventPairs.Count > 0)
+            PerformInteraction(lastAction, PlayerBehavior.Instance.inventory);
         if (possibleInteractions.Count == 0)
             EndInteraction();
         
@@ -114,8 +130,22 @@ public class Interactable : MonoBehaviour
 
     public virtual void PerformInteraction(PlayerBehavior.Actions action, Inventory inventory)
     {
-
+        foreach (ActionEventPair aep in actionEventPairs)
+        {
+            if (aep.action.ToLower() == action.sentence.ToLower() || aep.action.ToLower() == action.verb.ToLower())
+            {
+                if (aep.requiredItem == "" || inventory.HasItem(aep.requiredItem))
+                    {
+                    aep.eventToTrigger.Invoke();
+                    if (aep.requiredItem != "" && aep.consumesItem)
+                    {
+                        inventory.ConsumeItem(aep.requiredItem);
+                    }
+                }
+            }
+        }
     }
+
 
     public virtual void EndInteraction() { 
         if (interactCam != null)

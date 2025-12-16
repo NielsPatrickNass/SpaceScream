@@ -5,7 +5,7 @@ public class ChairInteractable : Interactable
 {
     public Transform sitPoint; // Position + Rotation fürs Hinsetzen
 
-    public override List<PlayerBehavior.Actions> StartInteraction()
+    public override List<PlayerBehavior.Actions> StartInteraction(PlayerBehavior.Actions lastAction)
     {
         var actions = new List<PlayerBehavior.Actions>();
         actions.Add(new PlayerBehavior.Actions(
