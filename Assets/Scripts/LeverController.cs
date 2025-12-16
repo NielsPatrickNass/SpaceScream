@@ -1,10 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class LeverController : MonoBehaviour
+public class LeverController : Interactable
 {
     [Header("Moving part of the lever")]
-    public Transform handle;                     
+    public Transform handle;
 
     [Header("Requirement")]
     public ButtonController requiredButton;      // Red Button should be assigned
@@ -13,7 +14,7 @@ public class LeverController : MonoBehaviour
     public ButtonController[] buttonsToLock;     // red and blue buttons should be locked if lever down
 
     [Header("How far to rotate down/up")]
-    public float downAngle = 90f;               
+    public float downAngle = 90f;
     public float moveDuration = 0.25f;
 
     private bool isDown = false;
@@ -21,8 +22,11 @@ public class LeverController : MonoBehaviour
     private Quaternion upRotation;
     private Quaternion downRotation;
 
-    void Start()
+    public override void Start()
     {
+        // wichtig: Interactable registriert sich hier
+        base.Start();
+
         // current pose in editor is in up position
         upRotation = handle.localRotation;
 
@@ -42,7 +46,25 @@ public class LeverController : MonoBehaviour
                 if (btn != null) btn.locked = false;
             }
         }
+
+        // Voice/Interact actions für dieses Puzzle (genau hier drin, kein extra Script)
+        if (possibleInteractions == null)
+            possibleInteractions = new List<PlayerBehavior.Actions>();
+
+        possibleInteractions.Clear();
+
+        // Diese "verbs" sind absichtlich NICHT States.
+        // Sie werden über PerformInteraction ausgeführt.
+        possibleInteractions.Add(new PlayerBehavior.Actions("press the red button", "PressRedButton", ""));
+        possibleInteractions.Add(new PlayerBehavior.Actions("pull the lever down", "PullLeverDown", ""));
+        possibleInteractions.Add(new PlayerBehavior.Actions("push the lever up", "PushLeverUp", ""));
+
+        // optional: Exit-Commands
+        possibleInteractions.Add(new PlayerBehavior.Actions("back", "back", ""));
+        possibleInteractions.Add(new PlayerBehavior.Actions("exit", "back", ""));
+        possibleInteractions.Add(new PlayerBehavior.Actions("stop", "back", ""));
     }
+
     // Function for Pull Down the Lever
     public void PullDown()
     {
@@ -67,6 +89,7 @@ public class LeverController : MonoBehaviour
             }
         }
     }
+
     // Function for Push Up the Lever
     public void PushUp()
     {
@@ -84,7 +107,7 @@ public class LeverController : MonoBehaviour
             }
         }
     }
- 
+
     void StartMove(Quaternion targetRotation)
     {
         if (moveRoutine != null)
@@ -92,6 +115,7 @@ public class LeverController : MonoBehaviour
 
         moveRoutine = StartCoroutine(MoveLever(targetRotation));
     }
+
     // Function for Rotation/Moving
     IEnumerator MoveLever(Quaternion targetRotation)
     {
@@ -108,7 +132,36 @@ public class LeverController : MonoBehaviour
         handle.localRotation = targetRotation;
     }
 
-    // keyboard test
+    // Das ist der entscheidende Teil: Voice-Aktion -> echte Puzzle-Methoden
+    public override void PerformInteraction(PlayerBehavior.Actions action, Inventory inventory)
+    {
+        switch (action.verb)
+        {
+            case "PressRedButton":
+                if (requiredButton == null) return;
+                if (requiredButton.locked)
+                {
+                    Debug.Log("Red button is locked!");
+                    return;
+                }
+
+                // Du hast keine Methode gezeigt, nur isPressed/locked.
+                // Also: Flag setzen. (Wenn du eine Press()-Methode hast, nutz die stattdessen.)
+                requiredButton.isPressed = true;
+                Debug.Log("Red button pressed (voice).");
+                break;
+
+            case "PullLeverDown":
+                PullDown();
+                break;
+
+            case "PushLeverUp":
+                PushUp();
+                break;
+        }
+    }
+
+    // keyboard test (kann bleiben)
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.D)) PullDown(); // d for Down

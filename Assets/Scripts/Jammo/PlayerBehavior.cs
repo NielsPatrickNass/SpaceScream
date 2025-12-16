@@ -162,6 +162,23 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             }
 
             string verb = actionsList[maxScoreIndex].verb;
+            //  Interactable Hook: custom verbs (e.g. PressButton, PullLeverDown, ...) 
+            if (currentlyInteractingWith != null)
+            {
+                // Ist dieses Verb ein State (MoveTo, UseInteract, PickUp, ...)?
+                bool isStateVerb = Enum.TryParse(typeof(State), verb, true, out _);
+
+                // Wenn es KEIN State ist, dann ist es eine Interactable-Aktion -> ausführen und fertig
+                if (!isStateVerb)
+                {
+                    currentlyInteractingWith.PerformInteraction(actionsList[maxScoreIndex], inventory);
+                    state = State.Idle;
+                    goalObject = null;
+                    return;
+                }
+            }
+
+
             //Debug.Log("goalobject: " + actionsList[maxScoreIndex].noun.ToLower().Replace(".", "") + "| state: " + (State)System.Enum.Parse(typeof(State), verb, true));
 
             if (currentlyInteractingWith != null && (verb=="back" ||verb =="stop" || verb == "exit" ||verb=="let's go"))
