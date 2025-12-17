@@ -1102,7 +1102,25 @@ MonoBehaviour:
   - sentence: Good Boy
     verb: Happy
     noun: 
-  actionsListBonus: []
+  actionsListBonus:
+  - sentence: Hide
+    verb: hide
+    noun: 
+  - sentence: Come to Me
+    verb: MoveTo
+    noun: audiencepos
+  - sentence: Hello
+    verb: Hello
+    noun: 
+  - sentence: Dance
+    verb: Happy
+    noun: 
+  - sentence: Happy
+    verb: Happy
+    noun: 
+  - sentence: Good Boy
+    verb: Happy
+    noun: 
   anim: {fileID: 7653815187304643211}
   agent: {fileID: 5129334937463362080}
   reachedPositionDistance: 0.2

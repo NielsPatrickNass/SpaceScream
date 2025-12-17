@@ -109,6 +109,10 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
         sentencesArray = sentences.ToArray();
     }
 
+    private void Start()
+    {
+        RegenerateActionsAndSentences();
+    }
     /// <summary>
     /// Rotate the agent towards the camera
     /// </summary>
@@ -158,7 +162,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     {
         // First we check that the score is > of 0.2, otherwise we let our agent perplexed;
         // This way we can handle strange input text (for instance if we write "Go see the dog!" the agent will be puzzled).
-        if (maxScore < 0.35f)
+        if (maxScore < 0.15f)
         {
             state = State.Puzzled;
         }
@@ -216,6 +220,14 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 goalObject = Hidingspot.ClosestHidingSpot();
                 state = State.GoHide;
             }
+            else if (state == State.MoveTo)
+                    {
+                Interactable inta = Interactable.GetInteractable(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+                if (inta != null)
+                goalObject = inta.gameObject;
+                if (goalObject == null)
+                    goalObject = GameObject.Find(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+            }
             else if (actionsList[maxScoreIndex].noun != "")
                 goalObject = GameObject.Find(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
             else
@@ -251,26 +263,9 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     }
 
 
-    /// <summary>
-    /// When the user finished to type the order
-    /// </summary>
-    /// <param name="prompt"></param>
-    public void OnOrderGiven(string prompt)
+    public void RegenerateActionsAndSentences()
     {
         sentences = new List<string>();
-
-        /*
-        int i = 0;
-        while (i < actionsList.Count)
-        {
-            if (actionsList[i].verb == "PickUp" || actionsList[i].verb == "UseInteract" || actionsList[i].verb == "MoveTo")
-            {
-               actionsList.RemoveAt(i);
-            }
-            else
-                i++;
-        }
-        */
         actionsList = new List<Actions>();
 
         if (currentlyInteractingWith != null)
@@ -283,7 +278,15 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
         {
             sentences.Add(actions.sentence);
         }
+    }
 
+    /// <summary>
+    /// When the user finished to type the order
+    /// </summary>
+    /// <param name="prompt"></param>
+    public void OnOrderGiven(string prompt)
+    {
+        RegenerateActionsAndSentences();
         sentencesArray = sentences.ToArray();
         (int, float) tuple_ = jammoBrain.RankSimilarity(prompt, sentencesArray);
         Utility(tuple_.Item2, tuple_.Item1);
@@ -353,7 +356,10 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 break;*/
 
             case State.Hiding:
-                if (!isHiding && anim.GetCurrentAnimatorStateInfo(0).IsName("transitionToHideState") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
+                if (!isHiding && 
+                    (((Hidingspot)currentlyInteractingWith).alternativeHideTransitionName == "" && anim.GetCurrentAnimatorStateInfo(0).IsName("transitionToHideState") ||
+                    anim.GetCurrentAnimatorStateInfo(0).IsName(((Hidingspot)currentlyInteractingWith).alternativeHideTransitionName)) 
+                    && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
                 {
                     isHiding = true;
                     rigHolder.transform.position = ((Hidingspot)currentlyInteractingWith).teleportSpot.position;
@@ -376,7 +382,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                     if (hidingspot != null)
                     {
                         currentlyInteractingWith = hidingspot;
-                        anim.SetTrigger("hide");
+                        anim.SetTrigger(hidingspot.alternativeHideTriggerName == "" ? "hide" : hidingspot.alternativeHideTriggerName);
                         state = State.Hiding;
                     }
                 }
@@ -481,15 +487,17 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 agent.SetDestination(goalObject.transform.position);
 
 
-                if (agent.velocity.magnitude < 0.3f && Mathf.Abs(transform.position.y - goalObject.transform.position.y) < 3 && Vector3.Distance(transform.position, new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z)) < reachedPositionDistance)
+                if (agent.velocity.magnitude < 0.3f && Vector3.Distance(transform.position, new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z)) < reachedPositionDistance)
                 {
+                    Hidingspot locspot = goalObject.GetComponent<Hidingspot>();
                     if (goalObject.name == "audiencepos")
                         state = State.Hello;
-                    else if (goalObject.GetComponent<Hidingspot>() != null)
+                    else if (locspot != null)
                     {
                         state = State.Hiding;
-                        currentlyInteractingWith = goalObject.GetComponent<Hidingspot>();
-                        anim.SetTrigger("hide");
+                        currentlyInteractingWith = locspot;
+                        
+                        anim.SetTrigger(locspot.alternativeHideTriggerName == "" ? "hide" : locspot.alternativeHideTriggerName);
                     }
                     else
                         state = State.Idle;

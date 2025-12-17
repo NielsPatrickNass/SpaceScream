@@ -3456,6 +3456,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 997102501311504759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4245810352350507153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3337925497293234644}
+  m_Layer: 0
+  m_Name: RigHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3337925497293234644
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4245810352350507153}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 660785974726182364}
+  m_Father: {fileID: 4625618048458356539}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4265087052533564177
 GameObject:
   m_ObjectHideFlags: 0
@@ -6759,7 +6791,7 @@ Transform:
   - {fileID: 8403073271544590904}
   - {fileID: 1705455033052466699}
   - {fileID: 8739788468896538810}
-  - {fileID: 660785974726182364}
+  - {fileID: 3337925497293234644}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7537000598615625271
@@ -6779,7 +6811,14 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+    'mixamorig:LeftHandIndex1'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform
+    'mixamorig:RightArm'\n\tTransform 'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform
+    'mixamorig:RightHandIndex3'\n\tTransform 'mixamorig:RightFoot'\n\tand more ...\n\tFrom
+    animation clip 'man_sitdown'\n\tFrom animation clip 'stand_to_cover'\n\tFrom
+    animation clip 'stand_to_cover'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -6893,6 +6932,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBehavior
   currentlyInteractingWith: {fileID: 0}
   inventory: {fileID: 8903754345930295184}
+  manRig: {fileID: 660785974726182364}
+  rigHolder: {fileID: 3337925497293234644}
+  isHiding: 0
   jammoBrain: {fileID: 8897924798066607319}
   actionsList:
   - sentence: Move to the Door
@@ -6941,6 +6983,7 @@ MonoBehaviour:
   - sentence: Good Boy
     verb: Happy
     noun: 
+  actionsListBonus: []
   anim: {fileID: 7537000598615625271}
   agent: {fileID: 5687084979115554992}
   reachedPositionDistance: 0.2
@@ -6950,6 +6993,7 @@ MonoBehaviour:
   grabPosition: {fileID: 0}
   cam: {fileID: 0}
   inputField: {fileID: 0}
+  state: 0
   sentences: []
   sentencesArray: []
   maxScore: 0
@@ -6960,7 +7004,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4625618048458356539}
+    m_TransformParent: {fileID: 3337925497293234644}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 495a70b8a8e41ba49a312213d8a405a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6980,15 +7024,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495a70b8a8e41ba49a312213d8a405a6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495a70b8a8e41ba49a312213d8a405a6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495a70b8a8e41ba49a312213d8a405a6, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 495a70b8a8e41ba49a312213d8a405a6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LeverController : MonoBehaviour
 {
@@ -105,8 +106,12 @@ public class LeverController : MonoBehaviour
             yield return null;
         }
 
+        onLeverDown.Invoke();
+
         handle.localRotation = targetRotation;
     }
+
+    public UnityEvent onLeverDown;
 
     // keyboard test
     void Update()

@@ -27,7 +27,7 @@ public class Interactable : MonoBehaviour
     [SerializeField]
     public List<ActionEventPair> actionEventPairs = new List<ActionEventPair>();
 
-    public virtual void Start()
+    public virtual void Awake()
     {
         if (interactables == null) { 
             interactables = new List<Interactable>();
@@ -118,8 +118,10 @@ public class Interactable : MonoBehaviour
     {
         Debug.Log("Interact");
         if (interactCam != null)
+        {
+            PlayerBehavior.Instance.cam.gameObject.SetActive(false);
             interactCam.gameObject.SetActive(true);
-
+        }
         if (actionEventPairs.Count > 0)
             PerformInteraction(lastAction, PlayerBehavior.Instance.inventory);
         if (possibleInteractions.Count == 0)
@@ -147,8 +149,11 @@ public class Interactable : MonoBehaviour
     }
 
 
-    public virtual void EndInteraction() { 
+    public virtual void EndInteraction() {
         if (interactCam != null)
-        interactCam.gameObject.SetActive(false);
+        {
+            PlayerBehavior.Instance.cam.gameObject.SetActive(true);
+            interactCam.gameObject.SetActive(false);
+        }
     }
 }
