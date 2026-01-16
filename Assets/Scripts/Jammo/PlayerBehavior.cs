@@ -222,14 +222,19 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             }
             else if (state == State.MoveTo)
                     {
+                goalObject = null;
                 Interactable inta = Interactable.GetInteractable(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
                 if (inta != null)
-                goalObject = inta.gameObject;
+                    goalObject = inta.gameObject;
+                if (inta == null)
+                {
+                    goalObject = RoomSwitcher.FindRoomSwitcher(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+                }
                 if (goalObject == null)
-                    goalObject = GameObject.Find(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+                    goalObject = GameObject.Find(actionsList[maxScoreIndex].noun);
             }
             else if (actionsList[maxScoreIndex].noun != "")
-                goalObject = GameObject.Find(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+                goalObject = GameObject.Find(actionsList[maxScoreIndex].noun);
             else
                 goalObject = null;
 
@@ -271,9 +276,9 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
         if (currentlyInteractingWith != null)
             actionsList.AddRange(currentlyInteractingWith.GetCurrentActions());
         actionsList.AddRange(actionsListBonus);
-        actionsList.AddRange(PickUp.GetPossibleActions());
-        actionsList.AddRange(Interactable.GetPossibleActions());
-
+        //actionsList.AddRange(PickUp.GetPossibleActionsForAll());
+        //actionsList.AddRange(Interactable.GetPossibleActionsForAll());
+        actionsList.AddRange(RoomInteractableManager.instance.GetCurrentRoomActions());
         foreach (PlayerBehavior.Actions actions in actionsList)
         {
             sentences.Add(actions.sentence);
@@ -368,7 +373,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
 
             case State.GoHide:
                 agent.isStopped = false;
-                agent.SetDestination(goalObject.transform.position);
+                agent.SetDestination(new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z));
 
                 if (agent.velocity.magnitude < 0.3f &&
                     Mathf.Abs(transform.position.y - goalObject.transform.position.y) < 3 &&
@@ -385,6 +390,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                         anim.SetTrigger(hidingspot.alternativeHideTriggerName == "" ? "hide" : hidingspot.alternativeHideTriggerName);
                         state = State.Hiding;
                     }
+                    goalObject = null;
                 }
                 break;
 
@@ -458,7 +464,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
 
             case State.MoveTo:
                 agent.isStopped = false;
-                agent.SetDestination(goalObject.transform.position);
+                agent.SetDestination(new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z));
 
                 if (agent.velocity.magnitude < 0.3f &&
                     Mathf.Abs(transform.position.y - goalObject.transform.position.y) < 3 &&
@@ -480,11 +486,12 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                     }
                     else
                         state = State.Idle;
+                    goalObject = null;
                 }
                 break;
 
             case State.UseInteract:
-                agent.SetDestination(goalObject.transform.position);
+                agent.SetDestination(new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z));
 
 
                 if (agent.velocity.magnitude < 0.3f && Vector3.Distance(transform.position, new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z)) < reachedPositionDistance)
@@ -509,11 +516,12 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                         if (newActions.Count > 0)
                             actionsList = newActions;
                     }
+                    goalObject = null;
                 }
                 break;
 
             case State.PickUp:
-                agent.SetDestination(goalObject.transform.position);
+                agent.SetDestination(new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z));
 
                 if (agent.velocity.magnitude < 0.3f && Mathf.Abs(transform.position.y - goalObject.transform.position.y) < 3 && Vector3.Distance(transform.position, new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z)) < reachedPositionDistance)
                 {
@@ -525,12 +533,13 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                     }
                     else
                         state = State.Puzzled;
+                    goalObject = null;
                 }
                 break;
 
             case State.BringObject:
                 // First move to the object
-                agent.SetDestination(goalObject.transform.position);
+                agent.SetDestination(new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z));
                 if (Vector3.Distance(transform.position, goalObject.transform.position) < reachedObjectPositionDistance)
                 {
                     Grab(goalObject);
@@ -539,7 +548,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 break;
 
             case State.BringObjectToPlayer:
-                agent.SetDestination(playerPosition.transform.position);
+                agent.SetDestination(new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z));
                 if (Vector3.Distance(transform.position, playerPosition.transform.position) < reachedObjectPositionDistance)
                 {
                     Drop(goalObject);

@@ -23,7 +23,7 @@ Material:
   m_Name: M_YFMeM_47
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: ad80740abfbb4504fbc01d5eeaad9bee, type: 2}
-  m_ModifiedSerializedProperties: 0
+  m_ModifiedSerializedProperties: 2
   m_ValidKeywords:
   - _EMISSION
   - _METALLICSPECGLOSSMAP
@@ -31,7 +31,7 @@ Material:
   - _SPECGLOSSMAP
   - _SPECULAR_SETUP
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1

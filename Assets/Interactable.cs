@@ -46,7 +46,29 @@ public class Interactable : MonoBehaviour
         possibleInteractions.Add(new PlayerBehavior.Actions("let us go", "back", ""));
     }
 
-    public static List<string> GetPossibleSentences()
+    public List<string> GetPossibleSentences()
+    {
+        List<string> returnList = new List<string>();
+
+        List<string> allNames = new List<string>();
+        allNames.Add(gameObject.name);
+        allNames.AddRange(synonyms);
+        foreach (string name in allNames)
+        {
+            returnList.Add("Move to the " + name);
+            returnList.Add("Go to the " + name);
+            returnList.Add("Use the " + name);
+            returnList.Add("Interact with the " + name);
+            if (useSynonyms == null)
+                useSynonyms = new List<string>();
+            foreach (string s in useSynonyms)
+                returnList.Add(s + "the " + name);
+        }
+
+        return returnList;
+    }
+
+    public static List<string> GetPossibleSentencesForAll()
     {
         if (interactables == null)
         {
@@ -58,43 +80,39 @@ public class Interactable : MonoBehaviour
         
         foreach (Interactable it in interactables)
         {
-            List<string> allNames = new List<string>();
-            allNames.Add(it.gameObject.name);
-            allNames.AddRange(it.synonyms);
-            foreach (string name in allNames)
-            {
-                returnList.Add("Move to the " + name);
-                returnList.Add("Go to the " + name);
-                returnList.Add("Use the " + name);
-                returnList.Add("Interact with the " + name);
-                if (it.useSynonyms == null)
-                    it.useSynonyms = new List<string>();
-                foreach (string s in it.useSynonyms)
-                    returnList.Add(s + "the " +  name);
-            }
+            returnList.AddRange(it.GetPossibleSentences());
         }
         return returnList;
     }
 
-    public static List<Actions> GetPossibleActions()
+    public List<Actions> GetPossibleActions()
+    {
+        List<Actions> actionsList = new List<Actions>();
+
+        List<string> allNames = new List<string>();
+        allNames.Add(gameObject.name);
+        allNames.AddRange(synonyms);
+        foreach (string name in allNames)
+        {
+            actionsList.Add(new Actions("Move to the " + name, "MoveTo", gameObject.name));
+            actionsList.Add(new Actions("Go to the " + name, "MoveTo", gameObject.name));
+            actionsList.Add(new Actions("Use the " + name, "UseInteract", gameObject.name));
+            actionsList.Add(new Actions("Interact with the " + name, "UseInteract", gameObject.name));
+            if (useSynonyms == null)
+                useSynonyms = new List<string>();
+            foreach (string s in useSynonyms)
+                actionsList.Add(new Actions(s + " " + name, "UseInteract", gameObject.name));
+        }
+
+        return actionsList;
+    }
+
+    public static List<Actions> GetPossibleActionsForAll()
     {
         List<Actions> actionsList = new List<Actions>();
         foreach (Interactable it in interactables)
         {
-            List<string> allNames = new List<string>();
-            allNames.Add(it.gameObject.name);
-            allNames.AddRange(it.synonyms);
-            foreach (string name in allNames)
-            {
-                actionsList.Add(new Actions("Move to the " + name, "MoveTo", it.gameObject.name));
-                actionsList.Add(new Actions("Go to the " + name, "MoveTo", it.gameObject.name));
-                actionsList.Add(new Actions("Use the " + name, "UseInteract", it.gameObject.name));
-                actionsList.Add(new Actions("Interact with the " + name, "UseInteract", it.gameObject.name));
-                if (it.useSynonyms == null)
-                    it.useSynonyms = new List<string>();
-                foreach (string s in it.useSynonyms)
-                    actionsList.Add(new Actions(s + " " + name, "UseInteract", it.gameObject.name));
-            }
+            actionsList.AddRange(it.GetPossibleActions()); 
         }
         return actionsList;
     }
@@ -103,7 +121,7 @@ public class Interactable : MonoBehaviour
     {
         foreach (Interactable interactable in interactables)
         {
-            if (interactable.name == interactableToFind)
+            if (interactable.name.ToLower().Replace(".", "") == interactableToFind)
                 return interactable;
         }
         return null;

@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Unity.AppUI.UI;
 using UnityEngine;
 using static PlayerBehavior;
 
@@ -14,14 +15,29 @@ public class PickUp : MonoBehaviour
     {
         foreach (PickUp pickup in possiblePickUps)
         {
-            if (pickup.gameObject.name == name)
+            if (pickup.gameObject.name.ToLower().Replace(".", "") == name)
                 return pickup;
         }
 
         return null;
     }
 
-    public static List<string> GetPossibleSentences()
+    public List<string> GetPossibleSentences()
+    {
+        List<string> returnList = new List<string>();
+        List<string> allNames = new List<string>();
+        allNames.Add(gameObject.name);
+        allNames.AddRange(synonyms);
+        foreach (string name in allNames)
+        {
+            returnList.Add("Move to the " + name);
+            returnList.Add("Go to the " + name);
+            returnList.Add("Pick Up the " + name);
+        }
+        return returnList;
+    }
+
+    public static List<string> GetPossibleSentencesForAll()
     {
         if (possiblePickUps == null)
         {
@@ -29,7 +45,7 @@ public class PickUp : MonoBehaviour
         }
 
         List<string> returnList = new List<string>();
-        foreach (PickUp pu in PickUp.possiblePickUps)
+        foreach (PickUp pu in possiblePickUps)
         {
             List<string> allNames = new List<string>();
             allNames.Add(pu.gameObject.name);
@@ -44,7 +60,23 @@ public class PickUp : MonoBehaviour
         return returnList;
     }
 
-    public static List<Actions> GetPossibleActions()
+    public List<Actions> GetPossibleActions()
+    {
+        List<Actions> actionsList = new List<Actions>();
+
+        List<string> allNames = new List<string>();
+        allNames.Add(gameObject.name);
+        allNames.AddRange(synonyms);
+        foreach (string name in allNames)
+        {
+            actionsList.Add(new Actions("Move to the " + name, "MoveTo", gameObject.name));
+            actionsList.Add(new Actions("Go to the " + name, "MoveTo", gameObject.name));
+            actionsList.Add(new Actions("Pick up the " + name, "PickUp", gameObject.name));
+        }
+        return actionsList;
+    }
+
+    public static List<Actions> GetPossibleActionsForAll()
     {
         List<Actions> actionsList = new List<Actions>();
         if (possiblePickUps == null)
