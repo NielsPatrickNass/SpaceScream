@@ -2,8 +2,10 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using Whisper;
 using Whisper.Utils;
 
@@ -20,6 +22,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
 
     public Transform manRig;
     public Transform rigHolder;
+
+    private bool isGameOver;
 
     /// <summary>
     /// The Robot Action List
@@ -122,6 +126,12 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
         agent.transform.rotation = Quaternion.RotateTowards(agent.transform.rotation, _lookRotation, 360);
     }
 
+    public void GameOver()
+    {
+        isGameOver = true;
+        agent.SetDestination(transform.position);
+        anim.SetTrigger("dying");
+    }
 
     /// <summary>
     /// Grab the object by putting it in the grabPosition
@@ -168,6 +178,11 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
         }
         else
         {
+            if (isGameOver && maxScoreIndex == 0)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
             Debug.Log("maxScoreIndex: "+ maxScoreIndex);
             if (state == State.Idle && maxScoreIndex >= actionsList.Count)
             {
@@ -184,8 +199,11 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             if (isHiding)
             {
                 isHiding = false;
+                rigHolder.gameObject.SetActive(true);
+                currentlyInteractingWith.EndInteraction();
                 rigHolder.transform.localPosition = Vector3.zero;
                 manRig.transform.localPosition = Vector3.zero;
+                state = State.Idle;
             }
                 
 
@@ -208,11 +226,14 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             // Get the verb and noun (if there is one)
             if (state == State.PickUp)
             {
-                goalObject = PickUp.GetPickUp(actionsList[maxScoreIndex].noun.ToLower().Replace(".", "")).gameObject;
+                
+                goalObject = RoomInteractableManager.instance.GetCurrentRoomPickUpByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", "")).gameObject;
+                if (goalObject == null)
+                    goalObject = RoomInteractableManager.instance.GetClosestPickUpFromCurrentRoom().gameObject;
             }
             else if (state == State.UseInteract)
             {
-                goalObject = Interactable.GetInteractable(actionsList[maxScoreIndex].noun.ToLower().Replace(".", "")).gameObject;
+                goalObject = RoomInteractableManager.instance.GetCurrentRoomInteractableByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", "")).gameObject;
 
             }
             else if (verb == "hide" && actionsList[maxScoreIndex].noun == "")
@@ -223,18 +244,18 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             else if (state == State.MoveTo)
                     {
                 goalObject = null;
-                Interactable inta = Interactable.GetInteractable(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+                Interactable inta = RoomInteractableManager.instance.GetCurrentRoomInteractableByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
                 if (inta != null)
                     goalObject = inta.gameObject;
                 if (inta == null)
                 {
-                    goalObject = RoomSwitcher.FindRoomSwitcher(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+                    goalObject = RoomInteractableManager.instance.GetCurrentRoomSwitchersByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", "")).gameObject;
                 }
-                if (goalObject == null)
-                    goalObject = GameObject.Find(actionsList[maxScoreIndex].noun);
+                //if (goalObject == null)
+                //    goalObject = GameObject.Find(actionsList[maxScoreIndex].noun);
             }
-            else if (actionsList[maxScoreIndex].noun != "")
-                goalObject = GameObject.Find(actionsList[maxScoreIndex].noun);
+            //else if (actionsList[maxScoreIndex].noun != "")
+            //    goalObject = GameObject.Find(actionsList[maxScoreIndex].noun);
             else
                 goalObject = null;
 
@@ -258,6 +279,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             {
                 state = State.Puzzled;
             }
+            if (maxScore < actionsList.Count && maxScore >= 0)
             lastAction = actionsList[maxScoreIndex];
         }
     }
@@ -272,6 +294,13 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     {
         sentences = new List<string>();
         actionsList = new List<Actions>();
+
+        if (isGameOver)
+        {
+            actionsList.Add(new Actions("restart", "restart", "restart"));
+            sentences.Add("restart");
+            return;
+        }
 
         if (currentlyInteractingWith != null)
             actionsList.AddRange(currentlyInteractingWith.GetCurrentActions());
@@ -317,9 +346,11 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
 
     private Actions lastAction;
 
+    public TextMeshPro debugWhereAmIGoing;
+
     private void Update()
     {
-
+        debugWhereAmIGoing.text = goalObject != null ? goalObject.name : "nowhere";
         if (anim != null)
         {
             float speedParam = 0f;
@@ -361,13 +392,20 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 break;*/
 
             case State.Hiding:
+                /*
                 if (!isHiding && 
                     (((Hidingspot)currentlyInteractingWith).alternativeHideTransitionName == "" && anim.GetCurrentAnimatorStateInfo(0).IsName("transitionToHideState") ||
                     anim.GetCurrentAnimatorStateInfo(0).IsName(((Hidingspot)currentlyInteractingWith).alternativeHideTransitionName)) 
                     && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f)
                 {
-                    isHiding = true;
                     rigHolder.transform.position = ((Hidingspot)currentlyInteractingWith).teleportSpot.position;
+                    isHiding = true;
+                }
+                */
+                if (!isHiding)
+                {
+                    isHiding = true;
+                    rigHolder.gameObject.SetActive(false);
                 }
                 break;
 
@@ -387,7 +425,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                     if (hidingspot != null)
                     {
                         currentlyInteractingWith = hidingspot;
-                        anim.SetTrigger(hidingspot.alternativeHideTriggerName == "" ? "hide" : hidingspot.alternativeHideTriggerName);
+                        currentlyInteractingWith.StartInteraction(lastAction);
+                        // anim.SetTrigger(hidingspot.alternativeHideTriggerName == "" ? "hide" : hidingspot.alternativeHideTriggerName);
                         state = State.Hiding;
                     }
                     goalObject = null;
@@ -482,7 +521,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                         state = State.Hiding;
                         
                         currentlyInteractingWith = goalObject.GetComponent<Hidingspot>();
-                        anim.SetTrigger("hide");
+                        currentlyInteractingWith.StartInteraction(lastAction);
+                        //anim.SetTrigger("hide");
                     }
                     else
                         state = State.Idle;
@@ -503,8 +543,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                     {
                         state = State.Hiding;
                         currentlyInteractingWith = locspot;
-                        
-                        anim.SetTrigger(locspot.alternativeHideTriggerName == "" ? "hide" : locspot.alternativeHideTriggerName);
+                        currentlyInteractingWith.StartInteraction(lastAction);
+                        //anim.SetTrigger(locspot.alternativeHideTriggerName == "" ? "hide" : locspot.alternativeHideTriggerName);
                     }
                     else
                         state = State.Idle;
@@ -526,7 +566,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 if (agent.velocity.magnitude < 0.3f && Mathf.Abs(transform.position.y - goalObject.transform.position.y) < 3 && Vector3.Distance(transform.position, new Vector3(goalObject.transform.position.x, transform.position.y, goalObject.transform.position.z)) < reachedPositionDistance)
                 {
 
-                    if (goalObject.tag == "Item")
+                    if (goalObject.GetComponent<PickUp>() != null)
                     {
                         state = State.Idle;
                         inventory.AddItem(goalObject);

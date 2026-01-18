@@ -12,10 +12,24 @@ public class Lightflicker : MonoBehaviour
 
     public List<bool> showObjects;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Stop()
     {
-        
+        StopAllCoroutines();
+        enabled = false;
+    }
+
+    public void StartFlickerSequence()
+    {
+        if (lights != null)
+        {
+            foreach (Light light in lights)
+                light.gameObject.SetActive(true);
+
+            foreach (GameObject g in flickerShowingObjects)
+                g.SetActive(false);
+        }
+        StopAllCoroutines();
+        StartCoroutine(Flicker());
     }
 
     // Update is called once per frame
@@ -24,26 +38,21 @@ public class Lightflicker : MonoBehaviour
         if (debugFlicker)
         {
             debugFlicker = false;
-            if (lights != null)
-            {
-                foreach (Light light in lights)
-                    light.gameObject.SetActive(true);
-
-                foreach (GameObject g in flickerShowingObjects)
-                    g.SetActive(false);
-            }
-            StopAllCoroutines();
-            StartCoroutine(Flicker());
+            StartFlickerSequence();
         }
     }
     Light[] lights = new Light[0];
+
+    public float chanceForShowing;
+
     IEnumerator Flicker()
     {
         lights = Object.FindObjectsByType<Light>(FindObjectsSortMode.None);
 
         List<float> list = new List<float>(flickerHoldTime);
         List<bool> olist = new List<bool>(showObjects);
-
+        float chanceRoll = Random.Range(0f, 1f);
+        bool isScare = chanceRoll <= chanceForShowing;
         while (list.Count > 0)
         {
 
@@ -52,11 +61,13 @@ public class Lightflicker : MonoBehaviour
                 light.gameObject.SetActive(!light.gameObject.activeSelf);
 
             }
-
-            foreach (GameObject g in flickerShowingObjects)
+            if (isScare)
             {
-                g.SetActive(olist[0]);
+                foreach (GameObject g in flickerShowingObjects)
+                {
+                    g.SetActive(olist[0]);
 
+                }
             }
 
             yield return new WaitForSecondsRealtime(list[0]);

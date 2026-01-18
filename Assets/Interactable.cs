@@ -170,7 +170,7 @@ public class Interactable : MonoBehaviour
     public virtual void EndInteraction() {
         if (interactCam != null)
         {
-            PlayerBehavior.Instance.cam.gameObject.SetActive(true);
+            RoomInteractableManager.instance.currentRoom.cam.gameObject.SetActive(true);
             interactCam.gameObject.SetActive(false);
         }
     }

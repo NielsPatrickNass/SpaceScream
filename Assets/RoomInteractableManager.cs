@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using static PlayerBehavior;
 
 public class RoomInteractableManager : MonoBehaviour
@@ -17,6 +18,8 @@ public class RoomInteractableManager : MonoBehaviour
         public string name;
         public GameObject roomRoot;
         public Camera cam;
+        public UnityEvent OnRoomEnterEvent;
+        public UnityEvent OnRoomExitEvent;
     }
 
     public static bool IsCurrentRoom(string roomToCheck)
@@ -27,11 +30,65 @@ public class RoomInteractableManager : MonoBehaviour
     public void Awake()
     {
         instance = this;
+        SetCurrentRoom(currentRoom.roomRoot);
     }
 
     public List<Interactable> GetCurrentRoomInteractables()
     {
         return new List<Interactable>(currentRoom.roomRoot.GetComponentsInChildren<Interactable>());
+    }
+
+    public PickUp GetCurrentRoomPickUpByName(string name)
+    {
+        List<PickUp> loclist = GetCurrentRoomPickUps();
+
+        foreach (PickUp p in loclist)
+        {
+            if (p.name.ToLower().Replace(".", "") == name)
+                return p;
+        }
+        return null;
+    }
+
+    public PickUp GetClosestPickUpFromCurrentRoom()
+    {
+        PickUp closest = null;
+
+        List<PickUp> loclist = GetCurrentRoomPickUps();
+
+        foreach (PickUp p in loclist)
+        {
+            float distCurr = Vector3.Distance(PlayerBehavior.Instance.transform.position, new Vector3(p.transform.position.x, PlayerBehavior.Instance.transform.position.y, p.transform.position.z));
+            float distClosest = closest == null ? Mathf.Infinity : Vector3.Distance(PlayerBehavior.Instance.transform.position, new Vector3(closest.transform.position.x, PlayerBehavior.Instance.transform.position.y, closest.transform.position.z));
+            if (distCurr < distClosest)
+                closest = p;
+        }
+
+        return closest;
+    }
+
+    public RoomSwitcher GetCurrentRoomSwitchersByName(string name)
+    {
+        List<RoomSwitcher> loclist = new List<RoomSwitcher>(currentRoom.roomRoot.GetComponentsInChildren<RoomSwitcher>());
+
+        foreach (RoomSwitcher rs in loclist)
+        {
+            if (rs.name.ToLower().Replace(".", "") == name)
+                return rs;
+        }
+        return null;
+    }
+
+    public Interactable GetCurrentRoomInteractableByName(string name)
+    {
+        List<Interactable> loclist = GetCurrentRoomInteractables();
+
+        foreach (Interactable i in loclist)
+        {
+            if (i.name.ToLower().Replace(".", "") == name)
+                return i;
+        }
+        return null;
     }
 
     public List<PickUp> GetCurrentRoomPickUps()
@@ -95,7 +152,9 @@ public class RoomInteractableManager : MonoBehaviour
         {
             if (ri.roomRoot.gameObject.GetInstanceID() == g.GetInstanceID())
             {
+                currentRoom.OnRoomExitEvent.Invoke();
                 currentRoom = ri;
+                currentRoom.OnRoomEnterEvent.Invoke();
                 ri.cam.gameObject.SetActive(true);
             }
             else
@@ -110,10 +169,14 @@ public class RoomInteractableManager : MonoBehaviour
         {
             if (ri.name == rname)
             {
+                currentRoom.OnRoomExitEvent.Invoke();
                 currentRoom = ri;
-                break;
+                currentRoom.OnRoomEnterEvent.Invoke();
+                ri.cam.gameObject.SetActive(true);
             }
-            
+            else
+                ri.cam.gameObject.SetActive(false);
+
         }
     }
 }
