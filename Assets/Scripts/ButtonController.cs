@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class ButtonController : MonoBehaviour
 {
+    [SerializeField] private AudioClip pressClip;
+
     [Header("Linked button (the opposite one)")]
     public ButtonController otherButton;   // assign the other button 
 
@@ -34,6 +36,7 @@ public class ButtonController : MonoBehaviour
         if (locked)
         {
             Debug.Log(name + " is locked and cannot be pressed.");
+    
             return;
         }
 
@@ -52,9 +55,13 @@ public class ButtonController : MonoBehaviour
 
         isPressed = true;
 
+        if (pressClip != null && AudioManager.I != null)
+            AudioManager.I.PlaySfx2D(pressClip);
+
         // move along the local direction
         Vector3 dir = localPressDirection.normalized;
         transform.localPosition = startPos + dir * pressDepth;
+
 
         Debug.Log(name + " is now pressed");
     }

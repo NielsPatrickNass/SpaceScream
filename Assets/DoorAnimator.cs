@@ -10,6 +10,9 @@ public class DoorAnimator : MonoBehaviour
     private Vector3 openPos;
     private bool opening = false;
 
+    [Header("Door Sound")]
+    [SerializeField] private AudioClip pressClip;
+
     void Awake()
     {
         closedPos = transform.localPosition;
@@ -29,6 +32,11 @@ public class DoorAnimator : MonoBehaviour
 
     public void OpenDoor()
     {
+        if (pressClip != null && AudioManager.I != null)
+        {
+            AudioManager.I.PlaySfx2D(pressClip);
+        }
+
         opening = true;
     }
 }

@@ -13,6 +13,10 @@ public class LeverController : MonoBehaviour
     [Header("Buttons to lock while lever is down")]
     public ButtonController[] buttonsToLock;     // red and blue buttons should be locked if lever down
 
+    [Header("Lever Sound")]
+    [SerializeField] private AudioClip pressClip;
+    [SerializeField] private AudioClip lockedClip;
+
     [Header("How far to rotate down/up")]
     public float downAngle = 90f;               
     public float moveDuration = 0.25f;
@@ -53,10 +57,14 @@ public class LeverController : MonoBehaviour
         if (requiredButton != null && !requiredButton.isPressed)
         {
             Debug.Log("Lever is locked. Please press red button first!");
+            if (lockedClip != null && AudioManager.I != null)
+                AudioManager.I.PlaySfx2D(lockedClip);
             return;
         }
 
         isDown = true;
+        if (pressClip != null && AudioManager.I != null)
+            AudioManager.I.PlaySfx2D(pressClip);
         StartMove(downRotation);
 
         // lock all assigned buttons
