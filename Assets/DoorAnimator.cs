@@ -18,13 +18,16 @@ public class DoorAnimator : MonoBehaviour
 
     void Update()
     {
-        if (!opening) return;
-
         transform.localPosition = Vector3.MoveTowards(
             transform.localPosition,
-            openPos,
+            opening ? openPos : closedPos,
             speed * Time.deltaTime
         );
+    }
+
+    public void CloseDoor()
+    {
+        opening = false;
     }
 
     public void OpenDoor()
