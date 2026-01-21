@@ -70,7 +70,6 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
 
     [Header("Robot list of actions")]
     public List<Actions> actionsList;
-    public List<Actions> actionsListOfCurrentRoom;
     public List<Actions> actionsListBonus;
 
     [Header("NavMesh and Animation")]
@@ -172,7 +171,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     {
         // First we check that the score is > of 0.2, otherwise we let our agent perplexed;
         // This way we can handle strange input text (for instance if we write "Go see the dog!" the agent will be puzzled).
-        if (maxScore < 0.15f)
+        if (maxScore < 0.22f)
         {
             state = State.Puzzled;
         }
@@ -201,20 +200,25 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 isHiding = false;
                 rigHolder.gameObject.SetActive(true);
                 currentlyInteractingWith.EndInteraction();
+                currentlyInteractingWith = null;
+                RegenerateActionsAndSentences();
                 rigHolder.transform.localPosition = Vector3.zero;
                 manRig.transform.localPosition = Vector3.zero;
                 state = State.Idle;
             }
-                
 
-            if (currentlyInteractingWith != null && (verb=="back" ||verb =="stop" || verb == "exit" ||verb=="let's go"))
+
+            if (currentlyInteractingWith != null && (verb == "back" || verb == "stop" || verb == "exit" || verb == "let's go"))
             {
                 currentlyInteractingWith.EndInteraction();
-                actionsList = actionsListOfCurrentRoom;
+                currentlyInteractingWith = null;
+                RegenerateActionsAndSentences();
             }
             else if (currentlyInteractingWith != null)
+            {
                 currentlyInteractingWith.PerformInteraction(actionsList[maxScoreIndex], inventory);
-
+                return;
+            }
 
             object isState = null;
             // Set the Robot State == verb
@@ -226,19 +230,23 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             // Get the verb and noun (if there is one)
             if (state == State.PickUp)
             {
-                
-                goalObject = RoomInteractableManager.instance.GetCurrentRoomPickUpByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", "")).gameObject;
+                PickUp locPickup = RoomInteractableManager.instance.GetCurrentRoomPickUpByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+                if (locPickup != null)
+                    goalObject = locPickup.gameObject;
                 if (goalObject == null)
                     goalObject = RoomInteractableManager.instance.GetClosestPickUpFromCurrentRoom().gameObject;
             }
             else if (state == State.UseInteract)
             {
-                goalObject = RoomInteractableManager.instance.GetCurrentRoomInteractableByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", "")).gameObject;
-
+                Interactable locInteractable = RoomInteractableManager.instance.GetCurrentRoomInteractableByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+                if ( locInteractable != null)
+                    goalObject = locInteractable.gameObject;
             }
             else if (verb == "hide" && actionsList[maxScoreIndex].noun == "")
             {
-                goalObject = Hidingspot.ClosestHidingSpot();
+                Hidingspot locspot = RoomInteractableManager.instance.GetClosestHidingSpotinCurrentRoom();
+                if (locspot != null)
+                    goalObject = locspot.gameObject;
                 state = State.GoHide;
             }
             else if (state == State.MoveTo)
@@ -249,7 +257,12 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                     goalObject = inta.gameObject;
                 if (inta == null)
                 {
-                    goalObject = RoomInteractableManager.instance.GetCurrentRoomSwitchersByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", "")).gameObject;
+                    RoomSwitcher locSwitcher = RoomInteractableManager.instance.GetCurrentRoomSwitchersByName(actionsList[maxScoreIndex].noun.ToLower().Replace(".", ""));
+                    if (locSwitcher != null)
+                    {
+                    goalObject = locSwitcher.gameObject;
+                        
+                    }
                 }
                 //if (goalObject == null)
                 //    goalObject = GameObject.Find(actionsList[maxScoreIndex].noun);
@@ -279,8 +292,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             {
                 state = State.Puzzled;
             }
-            if (maxScore < actionsList.Count && maxScore >= 0)
-            lastAction = actionsList[maxScoreIndex];
+            if (maxScoreIndex < actionsList.Count && maxScoreIndex >= 0)
+                lastAction = actionsList[maxScoreIndex];
         }
     }
 
@@ -302,12 +315,13 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             return;
         }
 
+        actionsList.AddRange(actionsListBonus);
         if (currentlyInteractingWith != null)
             actionsList.AddRange(currentlyInteractingWith.GetCurrentActions());
-        actionsList.AddRange(actionsListBonus);
-        //actionsList.AddRange(PickUp.GetPossibleActionsForAll());
-        //actionsList.AddRange(Interactable.GetPossibleActionsForAll());
-        actionsList.AddRange(RoomInteractableManager.instance.GetCurrentRoomActions());
+        else
+            actionsList.AddRange(RoomInteractableManager.instance.GetCurrentRoomActions());
+            //actionsList.AddRange(PickUp.GetPossibleActionsForAll());
+            //actionsList.AddRange(Interactable.GetPossibleActionsForAll());
         foreach (PlayerBehavior.Actions actions in actionsList)
         {
             sentences.Add(actions.sentence);
@@ -555,6 +569,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                         List<PlayerBehavior.Actions> newActions = interactable.StartInteraction(lastAction);
                         if (newActions.Count > 0)
                             actionsList = newActions;
+                        else
+                            currentlyInteractingWith = null;
                     }
                     goalObject = null;
                 }

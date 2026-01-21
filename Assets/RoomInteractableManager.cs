@@ -50,6 +50,23 @@ public class RoomInteractableManager : MonoBehaviour
         return null;
     }
 
+    public Hidingspot GetClosestHidingSpotinCurrentRoom()
+    {
+        Hidingspot closest = null;
+
+        List<Hidingspot> loclist = GetCurrentRoomHidingspots();
+
+        foreach (Hidingspot p in loclist)
+        {
+            float distCurr = Vector3.Distance(PlayerBehavior.Instance.transform.position, new Vector3(p.transform.position.x, PlayerBehavior.Instance.transform.position.y, p.transform.position.z));
+            float distClosest = closest == null ? Mathf.Infinity : Vector3.Distance(PlayerBehavior.Instance.transform.position, new Vector3(closest.transform.position.x, PlayerBehavior.Instance.transform.position.y, closest.transform.position.z));
+            if (distCurr < distClosest)
+                closest = p;
+        }
+
+        return closest;
+    }
+
     public PickUp GetClosestPickUpFromCurrentRoom()
     {
         PickUp closest = null;
@@ -94,6 +111,11 @@ public class RoomInteractableManager : MonoBehaviour
     public List<PickUp> GetCurrentRoomPickUps()
     {
         return new List<PickUp>(currentRoom.roomRoot.GetComponentsInChildren<PickUp>());
+    }
+
+    public List<Hidingspot> GetCurrentRoomHidingspots()
+    {
+        return new List<Hidingspot>(currentRoom.roomRoot.GetComponentsInChildren<Hidingspot>());
     }
 
     public List<Actions> GetCurrentRoomActions()
