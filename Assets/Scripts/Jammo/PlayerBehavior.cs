@@ -121,6 +121,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
     /// </summary>
     private void RotateTo()
     {
+        cam = RoomInteractableManager.instance.currentRoom.cam;
         var _lookRotation = Quaternion.LookRotation(new Vector3(cam.transform.position.x, transform.position.y, cam.transform.position.z));
         agent.transform.rotation = Quaternion.RotateTowards(agent.transform.rotation, _lookRotation, 360);
     }
@@ -230,6 +231,8 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 state = (State)System.Enum.Parse(typeof(State), verb, true);
             if (state==State.Hiding)
                 state = State.GoHide;
+            if (state == State.Idle)
+                anim.SetTrigger("normal");
 
             // Get the verb and noun (if there is one)
             if (state == State.PickUp)

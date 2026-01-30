@@ -307,7 +307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7147434479729022011, guid: 1df6beb098f93ba4eaea8ab2f4416fbf, type: 3}
       propertyPath: actionsListBonus.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7147434479729022011, guid: 1df6beb098f93ba4eaea8ab2f4416fbf, type: 3}
       propertyPath: actionsListBonus.Array.data[1].noun
@@ -320,6 +320,10 @@ PrefabInstance:
     - target: {fileID: 7147434479729022011, guid: 1df6beb098f93ba4eaea8ab2f4416fbf, type: 3}
       propertyPath: actionsListBonus.Array.data[2].verb
       value: Dance
+      objectReference: {fileID: 0}
+    - target: {fileID: 7147434479729022011, guid: 1df6beb098f93ba4eaea8ab2f4416fbf, type: 3}
+      propertyPath: actionsListBonus.Array.data[5].verb
+      value: Idle
       objectReference: {fileID: 0}
     - target: {fileID: 7147434479729022011, guid: 1df6beb098f93ba4eaea8ab2f4416fbf, type: 3}
       propertyPath: actionsListOfCurrentRoom.Array.size
@@ -340,6 +344,10 @@ PrefabInstance:
     - target: {fileID: 7147434479729022011, guid: 1df6beb098f93ba4eaea8ab2f4416fbf, type: 3}
       propertyPath: actionsListBonus.Array.data[4].sentence
       value: Good Boy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7147434479729022011, guid: 1df6beb098f93ba4eaea8ab2f4416fbf, type: 3}
+      propertyPath: actionsListBonus.Array.data[5].sentence
+      value: Stop
       objectReference: {fileID: 0}
     - target: {fileID: 7292854069160291246, guid: 1df6beb098f93ba4eaea8ab2f4416fbf, type: 3}
       propertyPath: m_SizeDelta.y
