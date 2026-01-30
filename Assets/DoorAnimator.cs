@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DoorAnimator : MonoBehaviour
 {
@@ -9,6 +11,12 @@ public class DoorAnimator : MonoBehaviour
     private Vector3 closedPos;
     private Vector3 openPos;
     private bool opening = false;
+
+    public UnityEvent onOpenEvent;
+
+    private Vector3 prevPos;
+
+    public float eventdelay;
 
     void Awake()
     {
@@ -23,6 +31,19 @@ public class DoorAnimator : MonoBehaviour
             opening ? openPos : closedPos,
             speed * Time.deltaTime
         );
+
+        if (opening && Vector3.Distance(transform.localPosition, openPos) < 0.1f && Vector3.Distance(prevPos, openPos) > 0.1f)
+            StartCoroutine(DelayEvent());
+
+        prevPos = transform.localPosition;
+
+
+    }
+
+    IEnumerator DelayEvent()
+    {
+        yield return new WaitForSecondsRealtime(eventdelay);
+        onOpenEvent.Invoke();
     }
 
     public void CloseDoor()

@@ -14,6 +14,8 @@ public class Interactable : MonoBehaviour
 
     public static List<Interactable> interactables;
 
+    public bool hideJammoDuringInteraction;
+
     [System.Serializable]
     public class ActionEventPair
     {
@@ -140,6 +142,9 @@ public class Interactable : MonoBehaviour
             PlayerBehavior.Instance.cam.gameObject.SetActive(false);
             interactCam.gameObject.SetActive(true);
         }
+        if (hideJammoDuringInteraction)
+            PlayerBehavior.Instance.HideRig(true);
+        
         if (actionEventPairs.Count > 0)
             PerformInteraction(lastAction, PlayerBehavior.Instance.inventory);
         if (possibleInteractions.Count == 0)
@@ -173,5 +178,7 @@ public class Interactable : MonoBehaviour
             RoomInteractableManager.instance.currentRoom.cam.gameObject.SetActive(true);
             interactCam.gameObject.SetActive(false);
         }
+        if (hideJammoDuringInteraction)
+            PlayerBehavior.Instance.HideRig(false);
     }
 }

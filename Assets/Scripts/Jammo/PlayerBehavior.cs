@@ -161,6 +161,10 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
         gameObject.transform.SetParent(null);
     }
 
+    public void HideRig(bool hideTheRig)
+    {
+        rigHolder.gameObject.SetActive(!hideTheRig);
+    }
 
     /// <summary>
     /// Utility function: Given the results of HuggingFaceAPI, select the State with the highest score
@@ -198,7 +202,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             if (isHiding)
             {
                 isHiding = false;
-                rigHolder.gameObject.SetActive(true);
+                HideRig(true);
                 currentlyInteractingWith.EndInteraction();
                 currentlyInteractingWith = null;
                 RegenerateActionsAndSentences();
@@ -419,7 +423,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 if (!isHiding)
                 {
                     isHiding = true;
-                    rigHolder.gameObject.SetActive(false);
+                    HideRig(false);
                 }
                 break;
 
