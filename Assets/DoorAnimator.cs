@@ -33,7 +33,8 @@ public class DoorAnimator : MonoBehaviour
         );
 
         if (opening && Vector3.Distance(transform.localPosition, openPos) < 0.1f && Vector3.Distance(prevPos, openPos) > 0.1f)
-            StartCoroutine(DelayEvent());
+            StartCoroutine(DelayEvent()
+                );
 
         prevPos = transform.localPosition;
 

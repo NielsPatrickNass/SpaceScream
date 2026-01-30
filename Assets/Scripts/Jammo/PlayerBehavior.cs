@@ -202,7 +202,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
             if (isHiding)
             {
                 isHiding = false;
-                HideRig(true);
+                HideRig(false);
                 currentlyInteractingWith.EndInteraction();
                 currentlyInteractingWith = null;
                 RegenerateActionsAndSentences();
@@ -423,7 +423,7 @@ public class PlayerBehavior : MonoBehaviour, WhisperInterface
                 if (!isHiding)
                 {
                     isHiding = true;
-                    HideRig(false);
+                    HideRig(true);
                 }
                 break;
 

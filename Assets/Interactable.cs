@@ -16,6 +16,8 @@ public class Interactable : MonoBehaviour
 
     public bool hideJammoDuringInteraction;
 
+    public UnityEvent onEndInteractionEvent;
+
     [System.Serializable]
     public class ActionEventPair
     {
@@ -180,5 +182,7 @@ public class Interactable : MonoBehaviour
         }
         if (hideJammoDuringInteraction)
             PlayerBehavior.Instance.HideRig(false);
+
+        onEndInteractionEvent.Invoke();
     }
 }

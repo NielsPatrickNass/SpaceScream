@@ -58056,6 +58056,9 @@ MonoBehaviour:
   useSynonyms: []
   possibleInteractions: []
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs: []
 --- !u!65 &124140096
 BoxCollider:
@@ -59058,6 +59061,9 @@ MonoBehaviour:
   useSynonyms: []
   possibleInteractions: []
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs: []
 --- !u!1001 &275329059
 PrefabInstance:
@@ -61433,6 +61439,9 @@ MonoBehaviour:
     verb: 
     noun: 
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs:
   - action: red button
     eventToTrigger:
@@ -62658,7 +62667,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1441229967}
+      - m_Target: {fileID: 963815534}
         m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
         m_MethodName: SetTrigger
         m_Mode: 5
@@ -63367,6 +63376,9 @@ MonoBehaviour:
     verb: enter
     noun: 
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs:
   - action: 0
     eventToTrigger:
@@ -64295,6 +64307,9 @@ MonoBehaviour:
     verb: eject
     noun: 
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs:
   - action: Eject Disk
     eventToTrigger:
@@ -64998,6 +65013,9 @@ MonoBehaviour:
   useSynonyms: []
   possibleInteractions: []
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs: []
 --- !u!1 &769391819
 GameObject:
@@ -67069,6 +67087,80 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: 3038dfda7aef8a844acad26386b5aa09, type: 3}
   m_PrefabInstance: {fileID: 959904342}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &963815532
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 963815533}
+  - component: {fileID: 963815534}
+  - component: {fileID: 963815535}
+  m_Layer: 0
+  m_Name: CameraTutorialRoomPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &963815533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963815532}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.241999, y: 5.868, z: -4.8589997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1441229965}
+  m_Father: {fileID: 2135071992}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &963815534
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963815532}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 94d2122990c827b4d83d48d6e16954df, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &963815535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963815532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40aa8a746858a814da412c3d0c8cf0cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OnAnimationSound
+  sources:
+  - {fileID: 8300000, guid: d0aa1536e00878f48b4ebe4f1edf6f72, type: 3}
+  volume: 0.8
+  volumeRdm: 0
+  pitchshiftRdm: 0
+  audiosourceRef: {fileID: 203445749766047599, guid: 74a69dc40aaa00349a50f29650b4435d, type: 3}
 --- !u!1 &965837147
 GameObject:
   m_ObjectHideFlags: 0
@@ -71665,6 +71757,9 @@ MonoBehaviour:
   useSynonyms: []
   possibleInteractions: []
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs: []
 --- !u!1 &1427737148
 GameObject:
@@ -72112,9 +72207,6 @@ GameObject:
   - component: {fileID: 1441229964}
   - component: {fileID: 1441229963}
   - component: {fileID: 1441229966}
-  - component: {fileID: 1441229967}
-  - component: {fileID: 1441229968}
-  - component: {fileID: 1441229969}
   m_Layer: 0
   m_Name: Camera Tutorial Room
   m_TagString: MainCamera
@@ -72190,11 +72282,11 @@ Transform:
   m_GameObject: {fileID: 1441229962}
   serializedVersion: 2
   m_LocalRotation: {x: 0.08462162, y: -0.64836687, z: 0.07973918, w: 0.752397}
-  m_LocalPosition: {x: 11.242, y: 5.868, z: -4.859}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2135071992}
+  m_Father: {fileID: 963815533}
   m_LocalEulerAnglesHint: {x: 13.341, y: -81.435, z: 0.604}
 --- !u!114 &1441229966
 MonoBehaviour:
@@ -72241,73 +72333,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!95 &1441229967
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1441229962}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9bbcc28ca5375d743b91c7076b2149ae, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1441229968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1441229962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40aa8a746858a814da412c3d0c8cf0cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OnAnimationSound
-  sources:
-  - {fileID: 8300000, guid: d0aa1536e00878f48b4ebe4f1edf6f72, type: 3}
-  volume: 0.8
-  volumeRdm: 0
-  pitchshiftRdm: 0
-  audiosourceRef: {fileID: 203445749766047599, guid: 74a69dc40aaa00349a50f29650b4435d, type: 3}
---- !u!114 &1441229969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1441229962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd9b2d6adf6828941b85dfeab69322a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OnAnimationEvent
-  unityEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1441229967}
-        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1001 &1455711838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77526,6 +77551,9 @@ MonoBehaviour:
   - investigate
   possibleInteractions: []
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs: []
   onInteractEvent:
     m_PersistentCalls:
@@ -78040,6 +78068,21 @@ MonoBehaviour:
     verb: turn
     noun: 
   hideJammoDuringInteraction: 1
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 862662833}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: reset
+          m_BoolArgument: 0
+        m_CallState: 2
   actionEventPairs:
   - action: turn
     eventToTrigger:
@@ -80009,6 +80052,9 @@ MonoBehaviour:
   useSynonyms: []
   possibleInteractions: []
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs: []
 --- !u!1 &2078339111
 GameObject:
@@ -80067,6 +80113,9 @@ MonoBehaviour:
   - open
   possibleInteractions: []
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs:
   - action: UseInteract
     eventToTrigger:
@@ -80620,6 +80669,9 @@ MonoBehaviour:
   useSynonyms: []
   possibleInteractions: []
   hideJammoDuringInteraction: 0
+  onEndInteractionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionEventPairs: []
 --- !u!1001 &2128518121
 PrefabInstance:
@@ -80814,7 +80866,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 1441229965}
+  - {fileID: 963815533}
   - {fileID: 749106876}
   - {fileID: 403904795}
   - {fileID: 1790150554}
